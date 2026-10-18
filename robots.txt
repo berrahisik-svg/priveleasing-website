@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /danke
+Disallow: /en/thank-you
+
+Sitemap: https://www.priveleasing.de/sitemap.xml
