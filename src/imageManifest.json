@@ -1,0 +1,248 @@
+{
+  "hero": {
+    "width": 3200,
+    "height": 1786,
+    "widths": [
+      640,
+      1080,
+      1600,
+      2400,
+      3200
+    ],
+    "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAADwAwCdASoYAA0APu1oqk6ppiQiMAgBMB2JYwCdAB51qdum5fd3YRzwAPyksMIOlLAtHlQexq92ysTfzru1oXOPFyYOi1aLMLWYdpBIyCHJQlbKRGkVTllQ0KPqoPIoAAA="
+  },
+  "fahrzeuge": {
+    "width": 1717,
+    "height": 966,
+    "widths": [
+      640,
+      1080,
+      1600,
+      1717
+    ],
+    "lqip": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAABwAwCdASoYAA0ALrV2u12jqampiYC0SxgE6AG5X43bjUzbRAAA/hlYjwvm8hzbQbktvGFmnp/v53F6Q306l1t7+VyIAI3EmtODzN8XcWVQgoUvAIlfAAAA",
+    "dominant": {
+      "r": 88,
+      "g": 72,
+      "b": 72
+    }
+  },
+  "yachten-boote": {
+    "width": 2400,
+    "height": 1350,
+    "widths": [
+      640,
+      1080,
+      1600,
+      2400
+    ],
+    "lqip": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADwAwCdASoYAA0APu1mq04ppaQiMAgBMB2JQBOgBD4PjJ5uPbqTmT5gAP6OtggCH91qhf7eQuv60uYQXg5d+H61DT9idJ7DZtogAA==",
+    "dominant": {
+      "r": 152,
+      "g": 168,
+      "b": 184
+    }
+  },
+  "aviation": {
+    "width": 2400,
+    "height": 1350,
+    "widths": [
+      640,
+      1080,
+      1600,
+      2400
+    ],
+    "lqip": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAwCdASoYAA0APu1kqk4ppaQiMAgBMB2JQBOmUABAB3dpRw3AsHEAAOelPinPR/Rj6HFmnroITpyb67orU38N+Uvpdm+Kg6L5DTbjOni+WY9JdZSMf4gAAAA=",
+    "dominant": {
+      "r": 72,
+      "g": 104,
+      "b": 152
+    }
+  },
+  "luxury-toys": {
+    "width": 2183,
+    "height": 1228,
+    "widths": [
+      640,
+      1080,
+      1600,
+      2183
+    ],
+    "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoYAA4APu1kqU2ppaQiMAgBMB2JZQAAQ7wG5haqAc634AAA/tJTu/uygqAUZe9YTucm13Vix6BVK/0IK5t9fn3Tel4P0Wc0v7n24d9+bWBiZ3oGMboKni8m+mGBu29cAAA=",
+    "dominant": {
+      "r": 8,
+      "g": 8,
+      "b": 8
+    }
+  },
+  "uhren": {
+    "width": 1717,
+    "height": 966,
+    "widths": [
+      640,
+      1080,
+      1600,
+      1717
+    ],
+    "lqip": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAADQAwCdASoYAA0APu1kq04ppaQiMAgBMB2JZwAAQxfrThxnS1hW7wAA/LA1ePzP4SEvHshcvEEh7fHDTyreG9sP6eLmxbjbDgZed0h3jb/JW4jL5UtlYfb2xSSB4K39PetwqP0z9T+DVoMcAAA=",
+    "dominant": {
+      "r": 248,
+      "g": 248,
+      "b": 248
+    }
+  },
+  "hero-portrait": {
+    "width": 1536,
+    "height": 2752,
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "lqip": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAADQBgCdASoYACsAPtFYok2oJaMiOrmYAQAaCWUAsR88hOP/ARWXeimgR7nDHb8AfvsOiYJwAkuvrb6IUntm6AAA/uRmAMJWp1yJYytToVSZ50xAp7cznzMnv7NVe6vrrhd/JHAiWCaPSSacEgYQk09/gCf2OHmCiqAq3yJc1+V3xDWyBcdEj+QuZ/3CtJyJioYztQk3wAAAAA=="
+  },
+  "arch-leasing": {
+    "width": 1600,
+    "height": 1986,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "lqip": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAABwBQCdASoYAB4APu1kqk2ppaQiMBgMATAdiWMAuwBX+GeSqpMHEVLuWNJDk3EB6r7wNFVAAP7x0MRyVDmtdVTfmOeT5zKvU/3bsDelf/MSME6fk7EELrl0OPE35SHjemnJ04FTblLic9jCDa4QcIjtjNkg/BT+sWeM5cuVTtAm9TicEsD8fe3FJOmVd3K6AiJXuz2+M9W3e+1Crd4lbBFOqBy74qmSEAAAAA=="
+  },
+  "arch-aviation": {
+    "width": 1600,
+    "height": 1986,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "lqip": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAAAQBQCdASoYAB4APu1qr1CppaQiqAqpMB2JZQCw7BEYAVoyb7H3se8UKtiGSY+rMsNAAP5RW/6YbwSC8A7y3Srl2MFAXL5pQKQMngmEJ0H7k078OEpk+1wEUa5UkZMj3nIbM1JnQKI+01xEG2SfrMBbhQYuDT0aCVHcpSieY5YXlGFZo7AiVQAA"
+  },
+  "arch-yacht-aerial": {
+    "width": 1600,
+    "height": 1986,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "lqip": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAwBACdASoYAB4APu1qqU8ppiOpsBgIATAdiWMAqlwWiUzeAgOkHnD5AAAA/uvl2WaHcMX/7enMZ+2ZxOYm7DvjFh4bPF7zvZPM6GWu5KPoMqDgooPsrIAA"
+  },
+  "arch-car-night": {
+    "width": 1600,
+    "height": 1986,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "lqip": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAACwBQCdASoYAB4APulcqE2pJKQiN/VYASAdCUATplxvLQKEo0nw65mt8YP85bzWWyYTUK2eLJgA/tRo/lNtnQzIwc8OT3OFu0ubHMCA0Krh8i3s9dIORTL5LciOGYsh+q6pCXgdZ9OapTvfEvDuYSmLOmiunoEGGgW3J6+c3j7Xwvf2uUJzSlDH7iw5zpuSntf9cJvUPIiJTdcPIAA="
+  },
+  "arch-yacht": {
+    "width": 1600,
+    "height": 1986,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "lqip": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAACQBACdASoYAB4APuFipE2opiOiN/VYARAcCWcAxNhUJ3ShMfhS6ty0TvTZGwAA/u7E93kPGEuA1m1pkPBh4PcIfK7CxTwQXjOc8e4XUvDjYyfJfjkZgAAA"
+  },
+  "arch-toys": {
+    "width": 1600,
+    "height": 1986,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "lqip": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAACQBQCdASoYAB4APuVep02pJSOiMAwBIByJZwC9WBuyFzYZgAanxnkyzepxamSQRQK4B+oIAAD+ntYsAXxpzLBVJLRcdtEkzIZCMLxQapssGhKwLQA6Ut8jlPjesUeoZtHlz5XzcFNbFpyYlRaRlVFtbeyEVmnHv9ggE1P0AAA="
+  },
+  "arch-watch": {
+    "width": 1600,
+    "height": 1986,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "lqip": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAACQBACdASoYAB4APu1mqk2ppaQiMAgBMB2JZQC90B5CZ+loYWyFcD3CaIHCmQAA+epe+2GVKAUJ3n/TR/kRI3fsdt0pDgnRZialOeRueYjD20v0PU+ZtR9CY1m/ghGptunXUzEEzfRAAA=="
+  },
+  "arch-movement": {
+    "width": 1600,
+    "height": 2143,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "lqip": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAADwBQCdASoYACAAPu1cqE4ppKOiMBgMATAdiWcAuwAN2DQKHklukReTzf+b6hm9jxIACju1GW/6gAD+nvw3SdSAGYcn8EQgqkqobIwPQecB3AIzK1XENoqSE7ENWyRBjcM3Wo/zhkNLouVueAVAirSkSsFT2+GtQSyoKkAA"
+  },
+  "fig-fahrzeuge": {
+    "width": 2400,
+    "height": 1610,
+    "widths": [
+      640,
+      1080,
+      1600,
+      2400
+    ],
+    "lqip": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAwBACdASoYABAAPu1kq04ppaQiMAgBMB2JZQC/OB6HiyuQyCN7+C/CKkAA4iv3BgEyQT4vfkKHLex9ohR6NAINdkfwpagtlvhZpBN3fXfYAo5/T54qsJ1jhMC8+8GCLNpqR9lVkQAAAA=="
+  },
+  "fig-yachten": {
+    "width": 2400,
+    "height": 1610,
+    "widths": [
+      640,
+      1080,
+      1600,
+      2400
+    ],
+    "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAQBACdASoYABAAPu1iqU2ppaOiMAgBMB2JQBOgA4V+Vu28kf3+QnJPIAD+3a2Mq2PKiz7M1NgjDUXHZHZa2fPOtiXsljZeX7rdKLAPFzOmuCj92RJJuPFKnX2GWx9TYAA="
+  },
+  "fig-aviation": {
+    "width": 2400,
+    "height": 1610,
+    "widths": [
+      640,
+      1080,
+      1600,
+      2400
+    ],
+    "lqip": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAADQAwCdASoYABAAPu1iqk2ppaQiMAgBMB2JZwAAYbmPc7wwTAIeWWAA/uiTnsWaSB3wyv/4ai/A1xM7nVmHaREB4Ttqr4dkmRfgx2s2q9LGfee+rBeYIf1RhvWQfdNUDNqRsYOA1QTfhsesWd4PL5PpLq5i4AAA"
+  },
+  "fig-toys": {
+    "width": 2400,
+    "height": 1610,
+    "widths": [
+      640,
+      1080,
+      1600,
+      2400
+    ],
+    "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAABQBACdASoYABAAPu1kq04ppaQiMAgBMB2JZwDG9CP/96YLlckF62EOu30YAP7wQJrRClJjHMyCLJJvbNCIk647NqR04DJhPCV0QAAA"
+  },
+  "fig-uhren": {
+    "width": 2400,
+    "height": 1610,
+    "widths": [
+      640,
+      1080,
+      1600,
+      2400
+    ],
+    "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAwBACdASoYABAAPu1orU6ppiSiMAgBMB2JZQCdACHNw/kGpOkL7mv+TqAA/qBilvgualgdJpZZJ33gBkxDn6n+IPfU4qG8ZhZMn67owIZxD+uXgLyy5yuTrH3cQsr9gAA="
+  }
+}
