@@ -1,0 +1,345 @@
+/* Hero */
+.hero {
+  position: relative;
+  height: 100svh;
+  min-height: 36rem;
+  overflow: hidden;
+  background: var(--ink);
+}
+.heroImg {
+  position: absolute;
+  inset: -2% 0 -12%;
+}
+.heroImg > picture {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.12);
+  transition: transform 2.4s var(--ease-expo);
+}
+.heroImg[data-ready] > picture {
+  transform: none;
+}
+.heroShade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, oklch(0.165 0.006 255 / 0.85) 0%, oklch(0.165 0.006 255 / 0.3) 38%, oklch(0.165 0.006 255 / 0) 60%),
+    linear-gradient(180deg, oklch(0.165 0.006 255 / 0.72) 0%, oklch(0.165 0.006 255 / 0.3) 14%, oklch(0.165 0.006 255 / 0) 30%);
+}
+.heroType {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--space-3) - 0.1em);
+}
+.index {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-micro);
+  font-weight: 560;
+  font-stretch: var(--semi);
+  letter-spacing: 0.12em;
+  opacity: 0;
+  transform: translateY(0.8rem);
+  transition:
+    opacity 800ms var(--ease-out) 400ms,
+    transform 1s var(--ease-expo) 400ms;
+}
+.index[data-ready] {
+  opacity: 1;
+  transform: none;
+}
+.indexOf {
+  color: var(--on-ink-mute);
+}
+.indexWord {
+  margin-left: 0.8rem;
+  padding-left: 0.9rem;
+  border-left: 1px solid var(--ink-line);
+  font-style: italic;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: var(--fs-small);
+  font-weight: 400;
+  color: var(--on-ink-soft);
+}
+.title {
+  font-size: clamp(3rem, 12.5vw, 15rem);
+  font-weight: 270;
+  line-height: 0.86;
+  letter-spacing: -0.06em;
+  max-width: 100%;
+}
+
+/* Einleitung */
+.intro {
+  background: var(--alu);
+  color: var(--on-alu);
+  padding: var(--space-6) var(--gutter) var(--space-5);
+  overflow: clip;
+}
+.introGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  row-gap: var(--space-4);
+}
+.statement {
+  grid-column: 1 / span 8;
+  font-size: var(--fs-m);
+  font-weight: 330;
+  font-stretch: 118%;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  text-wrap: pretty;
+}
+.does {
+  grid-column: 10 / span 3;
+  align-self: end;
+}
+.doesTitle {
+  color: var(--on-alu-mute);
+  margin-bottom: 1rem;
+}
+.does ul {
+  display: grid;
+}
+.does li {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-block: 0.85rem;
+  border-top: 1px solid var(--alu-line);
+  font-stretch: var(--semi);
+}
+.does li:last-child {
+  border-bottom: 1px solid var(--alu-line);
+}
+.star {
+  width: 0.7rem;
+  flex: none;
+  color: var(--signal-deep);
+}
+
+.figureRow {
+  position: relative;
+  margin-top: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+}
+.bigWord {
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  top: -0.12em;
+  font-size: clamp(5rem, 22vw, 26rem);
+  font-weight: 230;
+  font-style: italic;
+  font-stretch: 125%;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  color: var(--alu-2);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.figure {
+  position: relative;
+  z-index: 1;
+  grid-column: 4 / span 9;
+  margin: 0;
+  padding-top: clamp(3rem, 9vw, 10rem);
+}
+.figureFrame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0 / 60% 60% 0 0;
+}
+.figureImg {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 70%;
+}
+.figureImg > picture {
+  width: 100%;
+  height: 100%;
+}
+
+/* Zwei Wege, als Türen gezeichnet */
+.paths {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  background: var(--ink);
+  padding: var(--space-5) var(--gutter);
+}
+.door {
+  position: relative;
+  display: grid;
+  align-items: end;
+  min-height: clamp(30rem, 72svh, 46rem);
+  padding: var(--space-4) var(--space-4) var(--space-4);
+  border: 1px solid var(--ink-line);
+  border-bottom-color: var(--on-ink-mute);
+  border-radius: 999px 999px 0 0 / 34% 34% 0 0;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--on-ink);
+  transition:
+    color 600ms var(--ease-out),
+    border-color 600ms var(--ease-out);
+}
+.doorAlt {
+  margin-top: var(--space-5);
+}
+.doorFill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--alu);
+  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+  transform: translateY(101%);
+  transition:
+    transform 900ms var(--ease-expo),
+    border-radius 900ms var(--ease-expo);
+}
+.door:hover,
+.door:focus-visible {
+  color: var(--on-alu);
+  border-color: var(--alu);
+}
+.door:hover .doorFill,
+.door:focus-visible .doorFill {
+  transform: none;
+  border-radius: 0;
+}
+.doorBody {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+.pathTitle {
+  font-size: var(--fs-l);
+  font-weight: 320;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+.pathText {
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: color-mix(in oklch, currentColor 72%, transparent);
+  max-width: 34ch;
+}
+.doorCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: var(--space-1);
+  padding-bottom: 0.3rem;
+  font-weight: 520;
+  font-stretch: var(--semi);
+  border-bottom: 1px solid currentColor;
+}
+.doorArrow {
+  width: 1.5rem;
+  transition: transform 600ms var(--ease-expo);
+}
+.door:hover .doorArrow {
+  transform: translateX(0.35rem);
+  color: var(--signal-deep);
+}
+
+/* Nächste Kategorie */
+.next {
+  position: relative;
+  display: block;
+  height: 88svh;
+  min-height: 30rem;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--on-ink);
+}
+.nextImg {
+  --q: calc(1 - var(--o, 0));
+  position: absolute;
+  inset: 0;
+  clip-path: inset(calc(var(--q) * 38%) calc(var(--q) * 30%) 0 calc(var(--q) * 30%) round calc(var(--q) * 20vw) calc(var(--q) * 20vw) 0 0);
+}
+.nextImg > picture {
+  width: 100%;
+  height: 100%;
+  transition: transform 1.4s var(--ease-expo);
+}
+.next:hover .nextImg > picture {
+  transform: scale(1.04);
+}
+.nextShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, oklch(0.165 0.006 255 / 0.8) 0%, oklch(0.165 0.006 255 / 0) 55%);
+  pointer-events: none;
+}
+.nextType {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: var(--space-3);
+  display: grid;
+  gap: 1rem;
+}
+.nextType .label {
+  color: var(--on-ink-soft);
+}
+.nextName {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  font-size: var(--fs-xl);
+  font-weight: 290;
+  font-stretch: 125%;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+}
+.nextArrow {
+  width: 0.7em;
+  flex: none;
+  stroke-width: 0.8;
+  transition: transform 700ms var(--ease-expo);
+}
+.next:hover .nextArrow {
+  transform: translateX(0.12em);
+  color: var(--signal);
+}
+
+@media (max-width: 900px) {
+  .hero {
+    display: grid;
+    align-content: end;
+    padding: 0 var(--gutter) var(--space-3);
+  }
+  .heroType {
+    position: relative;
+    left: 0;
+    right: 0;
+  }
+  .statement,
+  .does {
+    grid-column: 1 / -1;
+  }
+  .figure {
+    grid-column: 1 / -1;
+  }
+  .paths {
+    grid-template-columns: 1fr;
+  }
+  .door {
+    min-height: 26rem;
+    padding: var(--space-3);
+  }
+  .doorAlt {
+    margin-top: 0;
+  }
+}

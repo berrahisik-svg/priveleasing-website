@@ -1,0 +1,188 @@
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  align-items: end;
+  min-height: 100svh;
+  padding: calc(var(--header-h) + var(--space-4)) var(--gutter) var(--space-4);
+  background: var(--ink);
+  overflow: hidden;
+}
+
+.heroText {
+  grid-column: 1 / span 7;
+  position: relative;
+  z-index: 2;
+}
+.title {
+  font-size: clamp(3rem, 9.2vw, 11rem);
+  font-weight: 270;
+  line-height: 0.88;
+  letter-spacing: -0.06em;
+}
+.lead {
+  margin-top: var(--space-3);
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--on-ink-soft);
+  max-width: 30ch;
+  opacity: 0;
+  transform: translateY(1rem);
+  transition:
+    opacity 900ms var(--ease-out) 600ms,
+    transform 1.2s var(--ease-expo) 600ms;
+}
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.75rem;
+  margin-top: var(--space-3);
+  opacity: 0;
+  transform: translateY(1rem);
+  transition:
+    opacity 900ms var(--ease-out) 750ms,
+    transform 1.2s var(--ease-expo) 750ms;
+}
+.lead[data-ready],
+.ctas[data-ready] {
+  opacity: 1;
+  transform: none;
+}
+
+.heroArt {
+  --ring: clamp(0.6rem, 1vw, 1rem);
+  grid-column: 8 / span 5;
+  position: relative;
+  align-self: stretch;
+  display: grid;
+  align-items: end;
+}
+.box {
+  position: relative;
+  width: min(100%, calc((100svh - var(--header-h) - var(--space-5)) * 4 / 5));
+  aspect-ratio: 4 / 5;
+  justify-self: end;
+}
+.arch {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  clip-path: inset(100% 0 0 0 round 999px 999px 0 0);
+  transition: clip-path 1.6s var(--ease-expo) 150ms;
+}
+.heroArt[data-ready] .arch {
+  clip-path: inset(0 0 0 0 round 999px 999px 0 0);
+}
+.archImg {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 80%;
+}
+.archImg > picture {
+  width: 100%;
+  height: 100%;
+}
+.ring {
+  position: absolute;
+  z-index: 1;
+  inset: calc(var(--ring) * -1) calc(var(--ring) * -1) 0;
+  border: 1px solid oklch(0.94 0.004 250 / 0.35);
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0;
+  pointer-events: none;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.9s var(--ease-expo) 350ms;
+}
+.heroArt[data-ready] .ring {
+  clip-path: inset(0 0 0 0);
+}
+
+.specs {
+  background: var(--alu);
+  color: var(--on-alu);
+  padding: var(--space-6) var(--gutter);
+}
+.specsGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  row-gap: var(--space-4);
+}
+.specsHead {
+  grid-column: 1 / span 5;
+}
+.specsLabel {
+  color: var(--on-alu-mute);
+  margin-bottom: var(--space-2);
+}
+.note {
+  font-size: var(--fs-m);
+  font-weight: 330;
+  font-stretch: 118%;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  max-width: 16ch;
+}
+.specsHead {
+  position: sticky;
+  top: calc(var(--header-h) + var(--space-3));
+  align-self: start;
+}
+
+/* Datenblatt wie auf dem Garantieschein einer Uhr */
+.sheet {
+  grid-column: 7 / span 6;
+  border-top: 1px solid var(--on-alu);
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: var(--space-2);
+  align-items: baseline;
+  padding-block: 1.35rem;
+  border-bottom: 1px solid var(--alu-line);
+}
+.row dt {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  font-weight: 500;
+  font-stretch: var(--semi);
+}
+.rowNum {
+  font-size: var(--fs-micro);
+  font-weight: 560;
+  color: var(--on-alu-mute);
+  letter-spacing: 0.1em;
+}
+.row dd {
+  color: var(--on-alu-soft);
+}
+
+@media (max-width: 900px) {
+  .hero {
+    align-items: start;
+  }
+  .heroText,
+  .heroArt {
+    grid-column: 1 / -1;
+  }
+  .heroArt {
+    margin-top: var(--space-4);
+    width: min(80%, 22rem);
+  }
+  .specsHead,
+  .sheet {
+    grid-column: 1 / -1;
+  }
+  .specsHead {
+    position: static;
+  }
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}

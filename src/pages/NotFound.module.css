@@ -1,0 +1,26 @@
+.page {
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-3);
+  padding: calc(var(--header-h) + var(--space-3)) var(--gutter) var(--space-5);
+  background: var(--ink);
+}
+.emblem {
+  width: clamp(5rem, 10vw, 8rem);
+  color: var(--on-ink);
+  overflow: visible;
+}
+.title {
+  font-size: var(--fs-xl);
+  font-weight: 280;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  max-width: 12ch;
+}
+.text {
+  font-size: var(--fs-lead);
+  color: var(--on-ink-soft);
+  max-width: 40ch;
+}
