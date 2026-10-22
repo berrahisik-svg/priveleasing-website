@@ -1,0 +1,328 @@
+.hero {
+  position: relative;
+  height: 265svh;
+  background: var(--ink);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* Geometrie der Tür, geteilt von Öffnung, Rahmen und Schwelle */
+.stage {
+  --aw: min(33vw, 34rem);
+  --ah: min(64svh, calc(var(--aw) * 1.5));
+  --gb: 9svh;
+  --ring: clamp(0.6rem, 0.9vw, 0.9rem);
+}
+
+/* Der Bogen. --e: 0 = Tür, 1 = offene Fläche */
+.door {
+  --k: calc(1 - var(--e, 0));
+  position: absolute;
+  inset: 0;
+  clip-path: inset(
+    calc(var(--k) * (100% - var(--ah) - var(--gb))) calc(var(--k) * (100% - var(--aw)) / 2) calc(var(--k) * var(--gb))
+      calc(var(--k) * (100% - var(--aw)) / 2) round calc(var(--k) * var(--aw) / 2) calc(var(--k) * var(--aw) / 2) 0 0
+  );
+  background: var(--ink-2);
+}
+
+/* Äußerer Bogen wie im Emblem: eine Haarlinie im Abstand */
+.frame {
+  position: absolute;
+  z-index: 1;
+  left: calc(50% - var(--aw) / 2 - var(--ring));
+  bottom: var(--gb);
+  width: calc(var(--aw) + var(--ring) * 2);
+  height: calc(var(--ah) + var(--ring));
+  border: 1px solid oklch(0.94 0.004 250 / 0.42);
+  border-bottom: 0;
+  border-radius: calc(var(--aw) / 2 + var(--ring)) calc(var(--aw) / 2 + var(--ring)) 0 0;
+  pointer-events: none;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.8s var(--ease-expo) 250ms;
+}
+.frame[data-ready] {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Schwelle: doppelte Grundlinie wie im Emblem */
+.ground {
+  position: absolute;
+  z-index: 1;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: var(--gb);
+  height: 1px;
+  background: var(--ink-line);
+  transform: scaleX(0);
+  transition: transform 1.6s var(--ease-expo) 150ms;
+  pointer-events: none;
+}
+.ground::after {
+  content: '';
+  position: absolute;
+  left: calc(50% - var(--aw) / 2 - var(--ring) * 2.5);
+  width: calc(var(--aw) + var(--ring) * 5);
+  top: 0;
+  height: 1px;
+  background: oklch(0.94 0.004 250 / 0.5);
+}
+.ground[data-ready] {
+  transform: none;
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 70%;
+}
+.img > picture {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.14);
+  transition: transform 2.6s var(--ease-expo);
+}
+.door[data-ready] .img > picture {
+  transform: none;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, oklch(0.165 0.006 255 / 0.6) 0%, oklch(0.165 0.006 255 / 0) 34%),
+    linear-gradient(0deg, oklch(0.165 0.006 255 / 0.7) 0%, oklch(0.165 0.006 255 / 0) 42%);
+}
+
+.title {
+  --hero-fs: clamp(2.6rem, 8.5vw, 12rem);
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: calc(var(--header-h) + 7svh);
+  font-size: var(--hero-fs);
+  font-weight: 290;
+  font-stretch: 125%;
+  line-height: 0.9;
+  letter-spacing: -0.052em;
+  color: var(--on-ink);
+  text-wrap: nowrap;
+}
+/* Englisch ist kürzer: gleiche Breite, größere Schrift */
+:global(html[lang='en']) .title {
+  --hero-fs: clamp(2.6rem, 11vw, 15rem);
+}
+.a {
+  display: block;
+}
+.b {
+  display: block;
+  margin-top: 0.06em;
+  text-align: right;
+  font-style: italic;
+  font-weight: 260;
+  letter-spacing: -0.04em;
+}
+
+.foot {
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  bottom: calc(var(--gb) + clamp(1.25rem, 3svh, 2.5rem));
+  width: min(26rem, calc((100% - var(--aw)) / 2 - var(--gutter) - 3rem));
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--on-ink-soft);
+  max-width: 26ch;
+  opacity: 0;
+  transform: translateY(1.2rem);
+  transition:
+    opacity 900ms var(--ease-out) 700ms,
+    transform 1.2s var(--ease-expo) 700ms;
+}
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.75rem;
+  margin-top: var(--space-3);
+  opacity: 0;
+  transform: translateY(1.2rem);
+  transition:
+    opacity 900ms var(--ease-out) 850ms,
+    transform 1.2s var(--ease-expo) 850ms;
+}
+.lead[data-ready],
+.ctas[data-ready] {
+  opacity: 1;
+  transform: none;
+}
+
+.cue {
+  position: absolute;
+  z-index: 2;
+  right: var(--gutter);
+  bottom: calc(var(--gb) + clamp(1.25rem, 3svh, 2.5rem));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: var(--fs-micro);
+  font-weight: 560;
+  font-stretch: var(--semi);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-ink-soft);
+  writing-mode: vertical-rl;
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out) 1.1s;
+}
+.cue[data-ready] {
+  opacity: 1;
+}
+.cue i {
+  position: relative;
+  width: 1px;
+  height: 4.5rem;
+  background: var(--ink-line);
+  overflow: hidden;
+}
+.cue i::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--on-ink);
+  transform: translateY(-100%);
+  animation: fall 2.4s var(--ease-inout) infinite;
+}
+@keyframes fall {
+  0% {
+    transform: translateY(-100%);
+  }
+  55% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.say {
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(3rem, 11svh, 8rem);
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  align-items: end;
+  gap: var(--space-3);
+  pointer-events: none;
+}
+.sayTitle {
+  font-size: var(--fs-xl);
+  font-weight: 300;
+  font-stretch: 125%;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+  max-width: 11ch;
+}
+.sayLead {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--on-ink-soft);
+  max-width: 34ch;
+  justify-self: end;
+}
+
+@media (max-width: 900px) {
+  .stage {
+    --aw: min(52vw, 26rem);
+    --ah: min(50svh, calc(var(--aw) * 1.5));
+    --gb: 20svh;
+  }
+  .foot {
+    bottom: clamp(1rem, 3svh, 2rem);
+  }
+  .foot {
+    width: auto;
+    right: var(--gutter);
+  }
+  .lead {
+    max-width: 30ch;
+  }
+  .cue {
+    display: none;
+  }
+  .say {
+    grid-template-columns: 1fr;
+  }
+  .sayLead {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .title,
+  :global(html[lang='en']) .title {
+    --hero-fs: clamp(2.3rem, 13.2vw, 4.5rem);
+    top: calc(var(--header-h) + 1.5svh);
+    line-height: 0.94;
+  }
+  /* Unter der Schwelle: Satz und Aktionen gemeinsam, die Tür nimmt den Rest */
+  .stage {
+    --gb: 11rem;
+    --aw: 62vw;
+    --ah: min(44svh, calc(var(--aw) * 1.45));
+  }
+  .foot {
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 1.25rem;
+    width: auto;
+    height: calc(var(--gb) - 2.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .lead {
+    font-size: 0.95rem;
+    max-width: 34ch;
+  }
+  .ctas {
+    margin-top: 0.9rem;
+    gap: 0.5rem 1.25rem;
+    flex-wrap: nowrap;
+  }
+}
+
+/* Sehr schmal: nur die Hauptaktion, damit nichts umbricht */
+@media (max-width: 400px) {
+  .ctas > :nth-child(2) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    height: auto;
+  }
+  .stage {
+    position: relative;
+  }
+}

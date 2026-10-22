@@ -1,0 +1,171 @@
+.process {
+  position: relative;
+  background: var(--ink);
+  color: var(--on-ink);
+  padding: var(--space-6) var(--gutter);
+}
+
+.head {
+  margin-bottom: var(--space-5);
+}
+.title {
+  font-size: var(--fs-xl);
+  font-weight: 280;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+}
+
+.track {
+  --g: var(--space-3);
+  /* x-Position des letzten Schritts relativ zur Spurbreite */
+  --last: calc((200% + var(--g) * 2) / 3);
+  position: relative;
+  padding-top: 4.5rem;
+}
+
+.rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--ink-line);
+}
+.head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+}
+.fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  width: calc(var(--p, 0) * var(--last));
+  background: var(--on-ink);
+}
+.key {
+  position: absolute;
+  top: 0;
+  left: calc(var(--p, 0) * var(--last));
+  width: 7rem;
+  height: 2.85rem;
+  transform: translate(calc(-100% - 0.6rem), -50%);
+  color: var(--on-ink);
+  z-index: 2;
+}
+.keySvg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2.85rem;
+  height: 7rem;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  overflow: visible;
+}
+.bit {
+  transform-box: fill-box;
+  transform-origin: -21% 50%;
+  transition: transform 700ms var(--ease-inout);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--g);
+}
+
+.step {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding-right: var(--space-3);
+  opacity: 0.45;
+  transition: opacity 700ms var(--ease-out);
+}
+.step[data-on] {
+  opacity: 1;
+}
+
+/* Kleine Türen als Wegmarken */
+.node {
+  position: absolute;
+  left: 0;
+  top: calc(-4.5rem - 0.75rem);
+  width: 1.1rem;
+  height: 1.5rem;
+  border: 1px solid var(--on-ink-mute);
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0;
+  background: var(--ink);
+  transition:
+    background-color 500ms var(--ease-out),
+    border-color 500ms var(--ease-out);
+}
+.step[data-on] .node {
+  border-color: var(--on-ink);
+  background: var(--on-ink);
+}
+.step[data-last][data-on] .node {
+  border-color: var(--signal);
+  background: var(--signal);
+}
+
+.num {
+  font-size: var(--fs-micro);
+  font-weight: 560;
+  font-stretch: var(--semi);
+  letter-spacing: 0.12em;
+  color: var(--on-ink-mute);
+}
+.step[data-on] .num {
+  color: var(--signal);
+}
+.stepTitle {
+  font-size: var(--fs-m);
+  font-weight: 340;
+  font-stretch: 125%;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  max-width: 13ch;
+}
+.stepText {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--on-ink-soft);
+  max-width: 30ch;
+}
+
+@media (max-width: 900px) {
+  .track {
+    padding-top: 0;
+    padding-left: 2.5rem;
+  }
+  .rail {
+    left: 0;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    height: auto;
+  }
+  .fill {
+    width: 1px;
+    height: 100%;
+    transform-origin: top;
+    transform: scaleY(var(--p, 0));
+  }
+  .key {
+    display: none;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  .node {
+    left: -2.5rem;
+    top: 0.1rem;
+    transform: translateX(-50%);
+  }
+}

@@ -1,0 +1,47 @@
+.enquiry {
+  background: var(--alu);
+  color: var(--on-alu);
+  padding: var(--space-6) var(--gutter);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  row-gap: var(--space-4);
+}
+
+.intro {
+  grid-column: 1 / span 5;
+  align-self: start;
+  position: sticky;
+  top: calc(var(--header-h) + var(--space-3));
+}
+
+.title {
+  font-size: var(--fs-l);
+  font-weight: 330;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  max-width: 9ch;
+}
+
+.lead {
+  margin-top: var(--space-3);
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--on-alu-soft);
+  max-width: 32ch;
+}
+
+.form {
+  grid-column: 7 / span 6;
+}
+
+@media (max-width: 900px) {
+  .intro,
+  .form {
+    grid-column: 1 / -1;
+    position: static;
+  }
+}
