@@ -1,0 +1,77 @@
+.lines {
+  display: block;
+}
+
+.w {
+  position: relative;
+  display: inline-block;
+  overflow: clip;
+  vertical-align: top;
+  /* Luft für Akzente und Unterlängen, ohne den Zeilenabstand zu verändern */
+  padding-block: 0.16em 0.12em;
+  margin-block: -0.16em -0.12em;
+}
+
+.i {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0);
+  transition: transform 1.15s var(--ease-expo);
+  transition-delay: calc(var(--d, 0ms) + var(--l, 0) * var(--st, 90ms));
+}
+
+.lines[data-in] .i {
+  transform: none;
+}
+
+.mbr {
+  display: none;
+}
+@media (max-width: 720px) {
+  .mbr {
+    display: inline;
+  }
+  .hy .i::after {
+    content: '-';
+  }
+  .hy .ghost::before {
+    content: attr(data-text) '-';
+  }
+}
+
+.ghost {
+  visibility: hidden;
+}
+.ghost::before {
+  content: attr(data-text);
+}
+
+.abs {
+  position: absolute;
+  left: 0;
+  top: 0.16em;
+  white-space: nowrap;
+}
+
+.unfold .i {
+  font-stretch: 75%;
+  transition:
+    transform 1.15s var(--ease-expo),
+    font-stretch 1.6s var(--ease-expo);
+  transition-delay: calc(var(--d, 0ms) + var(--l, 0) * var(--st, 90ms));
+}
+
+.unfold[data-in] .i {
+  font-stretch: inherit;
+}
+
+:global(html:not(.js)) .i {
+  transform: none;
+  font-stretch: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .i {
+    transform: none;
+    font-stretch: inherit;
+  }
+}

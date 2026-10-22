@@ -1,0 +1,43 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  pointer-events: none;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.curtain {
+  fill: var(--ink);
+}
+
+.mark {
+  fill: none;
+  stroke: var(--on-ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform-box: fill-box;
+  /* Mittelpunkt der Bogenöffnung, damit Linien und Loch gemeinsam wachsen */
+  transform-origin: 50% 57.2%;
+}
+
+.hole {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.star {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.bit {
+  transform-box: fill-box;
+  /* Drehachse liegt in der Schaftmitte, links außerhalb des Barts */
+  transform-origin: -21% 50%;
+}

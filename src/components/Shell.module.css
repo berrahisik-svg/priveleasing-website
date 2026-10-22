@@ -1,0 +1,39 @@
+.page {
+  position: relative;
+  z-index: 1;
+  background: var(--ink);
+}
+
+.page[data-phase='idle'] {
+  clip-path: none !important;
+}
+
+.main {
+  display: block;
+  outline: none;
+}
+
+/* Kuppel: oben ein Halbkreis über die volle Breite, darunter die Fläche */
+.curtain {
+  position: fixed;
+  left: 0;
+  top: -50vw;
+  z-index: 60;
+  width: 100vw;
+  height: calc(100vh + 50vw);
+  border-radius: 50vw 50vw 0 0;
+  background: var(--ink-2);
+  transform: translateY(100%);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Beim Öffnen liegt die neue Seite über der Kuppel und wächst als Bogen aus ihr heraus. */
+.curtain[data-phase='reveal'] {
+  z-index: 0;
+}
+
+/* Vor dem Mount des Intros deckt nur diese Fläche ab, damit nichts aufblitzt. */
+:global(html.is-intro:not(.intro-mounted)) .page {
+  visibility: hidden;
+}

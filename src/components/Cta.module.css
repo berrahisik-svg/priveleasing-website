@@ -1,0 +1,115 @@
+.arch {
+  --fg: var(--ink);
+  --bg: var(--on-ink);
+  --hover: var(--alu-2);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.1rem;
+  min-height: 3.4rem;
+  padding: 0 1.4rem 0 1.75rem;
+  color: var(--fg);
+  background: var(--bg);
+  border-radius: 999px 999px 0.45rem 0.45rem;
+  font-weight: 540;
+  font-stretch: var(--semi);
+  letter-spacing: 0.005em;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 420ms var(--ease-out);
+}
+.arch[data-tone='alu'] {
+  --fg: var(--alu);
+  --bg: var(--on-alu);
+  --hover: var(--ink-3);
+}
+.arch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--signal);
+  border-radius: 50% 50% 0 0 / 80% 80% 0 0;
+  transform: translateY(101%);
+  transition:
+    transform 620ms var(--ease-expo),
+    border-radius 620ms var(--ease-expo);
+}
+.arch:hover {
+  color: var(--alu);
+}
+.arch:hover::before {
+  transform: none;
+  border-radius: 0;
+}
+.archArrow {
+  width: 1.6rem;
+  transition: transform 620ms var(--ease-expo);
+}
+.arch:hover .archArrow {
+  transform: translateX(0.3rem);
+}
+.arch:active {
+  transform: translateY(1px);
+}
+
+.line {
+  --fg: var(--on-ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 3.4rem;
+  font-weight: 500;
+  font-stretch: var(--semi);
+  color: var(--fg);
+}
+.line[data-tone='alu'] {
+  --fg: var(--on-alu);
+}
+.line > span {
+  position: relative;
+  padding-block: 0.2rem;
+}
+.line > span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right;
+  transition: transform 560ms var(--ease-expo);
+}
+.line:hover > span::after {
+  animation: redraw 760ms var(--ease-expo);
+}
+.lineArrow {
+  width: 1.5rem;
+  transition:
+    transform 560ms var(--ease-expo),
+    color var(--t-mid) var(--ease-out);
+}
+.line:hover .lineArrow {
+  transform: translateX(0.35rem);
+  color: var(--signal);
+}
+
+@keyframes redraw {
+  0% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  45% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  46% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}

@@ -1,0 +1,145 @@
+.footer {
+  position: relative;
+  background: var(--ink);
+  color: var(--on-ink);
+  padding: var(--space-6) var(--gutter) 0;
+  overflow: clip;
+  border-top: 1px solid var(--ink-3);
+}
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--space-3);
+  padding-bottom: var(--space-5);
+}
+
+.statement {
+  font-size: var(--fs-l);
+  font-weight: 330;
+  font-stretch: var(--wide);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  max-width: 14ch;
+}
+
+.big {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding-block: 0.9rem;
+  font-size: var(--fs-s);
+  font-weight: 460;
+  font-stretch: var(--semi);
+  border-bottom: 1px solid var(--on-ink);
+  transition: gap 520ms var(--ease-expo);
+}
+.bigArrow {
+  width: 2.2rem;
+  transition:
+    transform 520ms var(--ease-expo),
+    color var(--t-mid) var(--ease-out);
+}
+.big:hover .bigArrow {
+  transform: translateX(0.5rem);
+  color: var(--signal);
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.3fr);
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--ink-line);
+}
+
+.h {
+  color: var(--on-ink-mute);
+  margin-bottom: 1.1rem;
+}
+
+.cols ul {
+  display: grid;
+  gap: 0.15rem;
+}
+.cols li a {
+  display: inline-block;
+  padding-block: 0.3rem;
+  color: var(--on-ink-soft);
+  transition: color var(--t-mid) var(--ease-out);
+}
+.cols li a:hover {
+  color: var(--on-ink);
+}
+
+.company {
+  justify-self: end;
+  text-align: right;
+  font-size: var(--fs-small);
+  color: var(--on-ink-soft);
+  line-height: 1.7;
+}
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  justify-content: flex-end;
+  margin: 0.35rem 0;
+}
+.rights {
+  margin-top: 1rem;
+  color: var(--on-ink-mute);
+}
+
+.markWrap {
+  overflow: hidden;
+  margin-inline: calc(var(--gutter) * -0.35);
+  padding-top: var(--space-2);
+}
+.markInner {
+  will-change: transform;
+}
+.mark {
+  width: 100%;
+  height: auto;
+  color: var(--on-ink);
+  /* Unterkante liegt knapp unter dem Seitenende: die Marke steht auf dem Boden */
+  margin-bottom: -2.2%;
+}
+
+@media (max-width: 900px) {
+  .top {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .company {
+    grid-column: 1 / -1;
+    justify-self: start;
+    text-align: left;
+  }
+  .contact {
+    justify-content: flex-start;
+  }
+}
+
+.linkBtn {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.company a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 320ms var(--ease-out);
+}
+.company a:hover {
+  color: var(--on-ink);
+}

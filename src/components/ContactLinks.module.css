@@ -1,0 +1,27 @@
+.c {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  white-space: nowrap;
+  color: inherit;
+  text-decoration: none;
+  transition: color 320ms var(--ease-out);
+}
+.c:hover {
+  color: var(--on-ink);
+}
+.ic {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+}
+.tel {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wa {
+  fill: currentColor;
+}
