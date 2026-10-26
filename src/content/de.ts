@@ -26,8 +26,8 @@ export const de: Dict = {
     categories: 'Kategorien',
     services: 'Leistungen',
     legal: 'Rechtliches',
-    company: 'Lead Lab Consulting FZCO',
-    location: 'Dubai, Vereinigte Arabische Emirate',
+    company: 'Platin RE GmbH',
+    location: 'Brauerstraße 12 A, 76135 Karlsruhe',
     rights: '© 2026 PRIVÉ',
   },
   nav: { categories: 'Kategorien', services: 'Leistungen' },
@@ -167,9 +167,9 @@ export const de: Dict = {
       text: 'Anfragen beantworten wir persönlich.',
       companyTitle: 'Unternehmen',
       firmLabel: 'Firma',
-      firm: 'Lead Lab Consulting FZCO',
+      firm: 'Platin RE GmbH',
       seatLabel: 'Sitz',
-      seat: 'Dubai, Vereinigte Arabische Emirate',
+      seat: 'Brauerstraße 12 A, 76135 Karlsruhe',
       whatsappLabel: 'WhatsApp',
       phoneLabel: 'Telefon',
       mailLabel: 'E-Mail',
@@ -253,11 +253,18 @@ export const de: Dict = {
     impressum: {
       title: 'Impressum',
       blocks: [
-        { heading: 'Anbieter', body: 'Lead Lab Consulting FZCO\nDubai, Vereinigte Arabische Emirate\n\nPRIVÉ ist eine Marke der Lead Lab Consulting FZCO.' },
+        { heading: 'Anbieter', body: 'Platin RE GmbH\nBrauerstraße 12 A\n76135 Karlsruhe\n\nPRIVÉ ist eine Marke der Platin RE GmbH.' },
+        { heading: 'Vertreten durch', body: 'Volkan Ertas, Geschäftsführer' },
         {
           heading: 'Kontakt',
           body: 'Telefon: 089 41616310\nE-Mail: info@priveleasing.de\n\nAnfragen richten Sie am einfachsten über das {link} an uns.',
           link: { text: 'Anfrageformular', to: 'anfrage' },
+        },
+        { heading: 'Registereintrag', body: 'Amtsgericht Mannheim, HRB 749727' },
+        { heading: 'Umsatzsteuer-ID', body: 'Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: DE325145378' },
+        {
+          heading: 'Verbraucherstreitbeilegung',
+          body: 'Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.',
         },
         {
           heading: 'Leistungen',
@@ -286,7 +293,7 @@ export const de: Dict = {
       blocks: [
         {
           heading: '1. Verantwortlich',
-          body: 'Lead Lab Consulting FZCO, Dubai, Vereinigte Arabische Emirate. Kontakt über das {link}.',
+          body: 'Platin RE GmbH, Brauerstraße 12 A, 76135 Karlsruhe, vertreten durch den Geschäftsführer Volkan Ertas.\nTelefon: 089 41616310\nE-Mail: info@priveleasing.de\n\nSie erreichen uns auch über das {link}.',
           link: { text: 'Anfrageformular', to: 'anfrage' },
         },
         {

@@ -23,10 +23,11 @@ export function jsonLd(url: string, site: string) {
     '@type': 'Organization',
     '@id': abs('/#org'),
     name: 'PRIVÉ',
-    legalName: 'Lead Lab Consulting FZCO',
+    legalName: 'Platin RE GmbH',
     url: abs('/'),
     logo: abs('/brand/prive-luxury-leasing-logo-white.svg'),
-    address: { '@type': 'PostalAddress', addressLocality: 'Dubai', addressCountry: 'AE' },
+    address: { '@type': 'PostalAddress', streetAddress: 'Brauerstraße 12 A', postalCode: '76135', addressLocality: 'Karlsruhe', addressCountry: 'DE' },
+    vatID: 'DE325145378',
     telephone: '+49 89 41616310',
     email: 'info@priveleasing.de',
   }
