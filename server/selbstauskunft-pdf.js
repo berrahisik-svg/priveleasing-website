@@ -20,7 +20,6 @@ const TOP = 52
 const BOTTOM = 64
 const BREITE = W - ML - MR
 
-const ROLLEN = { antragsteller: 'Antragsteller', mitantragsteller: 'Mitantragsteller', buerge: 'Bürge' }
 const FAMILIE = { ledig: 'ledig', verheiratet: 'verheiratet', getrennt: 'getrennt lebend', geschieden: 'geschieden', verwitwet: 'verwitwet' }
 
 /** Nur druckbare Zeichen, Zeilenumbrüche normalisiert. */
@@ -186,38 +185,40 @@ export async function selbstauskunftPdf(d = {}, { unterschrift = null, vorgang =
   y -= 22
   page.drawText('Selbstauskunft.', { x: ML, y, size: 27, font: reg, color: INK })
   y -= 20
-  const meta = [`Online übermittelt am ${zeit} Uhr`, vorgang ? `Vorgang ${vorgang}` : '', `Ausgefüllt als ${ROLLEN[d.rolle] || 'Antragsteller'}`].filter(Boolean).join('  ·  ')
+  const meta = [`Online übermittelt am ${zeit} Uhr`, vorgang ? `Vorgang ${vorgang}` : ''].filter(Boolean).join('  ·  ')
   page.drawText(meta, { x: ML, y, size: 8.2, font: reg, color: SOFT })
   y -= 26
 
-  abschnitt('01', 'Angaben zur Person')
+  abschnitt('01', 'Unternehmen und Person')
   paare([
-    rein(d.firma) && F('Firma (Leasingnehmer)', d.firma, true),
+    F('Firma', d.firma, true),
+    F('Rechtsform', d.rechtsform),
+    F('Funktion im Unternehmen', d.funktion),
+    F('Geschäftszweig / Tätigkeit', d.beruf),
+    F('Selbstständig seit', datum(d.beschaeftigt_seit)),
+    rein(d.firmenanschrift) && F('Firmenanschrift', d.firmenanschrift, true),
+  ])
+  unterTitel('Angaben zur Person')
+  paare([
     F('Name, ggf. auch Geburtsname', d.name),
     F('Vorname', d.vorname),
     F('Geburtsdatum', datum(d.geburtsdatum)),
     F('Geburtsort', d.geburtsort),
     F('Staatsangehörigkeit', d.staatsangehoerigkeit),
     F('Familienstand', [FAMILIE[d.familienstand] || d.familienstand, rein(d.familienstand_seit) ? 'seit ' + datum(d.familienstand_seit) : ''].filter(Boolean).join(', ')),
-    F('Anschrift: Straße', d.strasse),
-    F('Anschrift: PLZ / Ort', d.plz_ort),
+    F('Privatanschrift: Straße', d.strasse),
+    F('Privatanschrift: PLZ / Ort', d.plz_ort),
     F('Telefon', d.telefon),
     F('E-Mail', d.email),
     F('Unterhaltsberechtigte Personen', d.unterhalt),
-    F('Ausgeübter Beruf / Geschäftszweig', d.beruf),
-    F('Beschäftigung bei (Firma mit Anschrift)', d.arbeitgeber, true),
-    F('Beschäftigt seit', datum(d.beschaeftigt_seit)),
-    F('Ungekündigte Stellung', jn(d.ungekuendigt)),
-    F('Selbstständig', jn(d.selbststaendig)),
   ])
 
   abschnitt('02', 'Einkommen (monatlich, Nachweise beigefügt)')
   unterTitel('a) Monatliches Einkommen')
   paare([
-    F('Nettolohn, -gehalt, sonstige Bezüge', euro(d.netto)),
-    F('Geschäftseinkünfte (Entnahmen, Gewinn)', euro(d.geschaeft)),
-    F('Anzahl der Monatsgehälter', d.monatsgehaelter),
-    F('Bonuszahlungen', euro(d.bonus)),
+    F('Geschäftsführergehalt bzw. Entnahmen (netto)', euro(d.netto)),
+    F('Gewinn des Unternehmens (Monatsdurchschnitt)', euro(d.geschaeft)),
+    F('Ausschüttungen / Tantiemen (pro Jahr)', euro(d.bonus)),
     F('(Kalt-)Mieteinnahmen', euro(d.mieteinnahmen)),
     F('Sonstige Einkünfte (z. B. Beteiligungen, Kapitalvermögen)', euro(d.sonstige_einkuenfte)),
   ])

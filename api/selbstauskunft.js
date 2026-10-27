@@ -43,7 +43,6 @@ function lesen(req, max) {
 }
 
 const rein = (s, max = 300) => String(s ?? '').replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max)
-const jaNein = (v) => (v === 'ja' ? 'ja' : v === 'nein' ? 'nein' : '–')
 const empfaenger = () => [INFO, BOARD].filter(Boolean)
 
 function dateiname(name, art) {
@@ -55,15 +54,15 @@ function dateiname(name, art) {
 /** Daten aus dem Formular übernehmen (nur bekannte Felder, gekürzt). */
 function datenAus(roh = {}) {
   const felder = [
-    'rolle', 'firma', 'name', 'vorname', 'geburtsdatum', 'geburtsort', 'staatsangehoerigkeit', 'strasse', 'plz_ort', 'telefon', 'email',
-    'familienstand', 'familienstand_seit', 'unterhalt', 'beruf', 'arbeitgeber', 'beschaeftigt_seit', 'ungekuendigt', 'selbststaendig',
-    'netto', 'geschaeft', 'monatsgehaelter', 'bonus', 'mieteinnahmen', 'sonstige_einkuenfte',
+    'firma', 'rechtsform', 'funktion', 'firmenanschrift', 'name', 'vorname', 'geburtsdatum', 'geburtsort', 'staatsangehoerigkeit', 'strasse', 'plz_ort', 'telefon', 'email',
+    'familienstand', 'familienstand_seit', 'unterhalt', 'beruf', 'beschaeftigt_seit',
+    'netto', 'geschaeft', 'bonus', 'mieteinnahmen', 'sonstige_einkuenfte',
     'miete', 'haushalt', 'sonstige_ausgaben', 'zins_tilgung', 'zins_tilgung_an', 'zins_tilgung_neu',
     'guthaben', 'wertpapiere', 'grundeigentum', 'verkehrswert', 'sonstiges_vermoegen', 'buergschaften',
     'mahnverfahren', 'zwangsvollstreckung', 'eidesstattlich', 'insolvenz', 'ort',
   ]
   const d = {}
-  for (const k of felder) d[k] = rein(roh[k], k === 'arbeitgeber' || k.startsWith('sonstige') || k === 'guthaben' || k === 'wertpapiere' ? 600 : 200)
+  for (const k of felder) d[k] = rein(roh[k], k === 'firmenanschrift' || k.startsWith('sonstige') || k === 'guthaben' || k === 'wertpapiere' ? 600 : 200)
   d.email = d.email.toLowerCase()
   d.verbindlichkeiten = (Array.isArray(roh.verbindlichkeiten) ? roh.verbindlichkeiten : []).slice(0, 8).map((r) => ({
     bei: rein(r?.bei, 160), betrag: rein(r?.betrag, 40), saldo: rein(r?.saldo, 40), rate: rein(r?.rate, 40), laufzeit: rein(r?.laufzeit, 40), zinsbindung: rein(r?.zinsbindung, 40),
@@ -91,9 +90,9 @@ function zusammenfassung({ modus, d, link, dateien, vorgang }) {
     zeilen.push(
       '',
       'Kurzüberblick',
-      `Rolle: ${{ antragsteller: 'Antragsteller', mitantragsteller: 'Mitantragsteller', buerge: 'Bürge' }[d.rolle] || 'Antragsteller'}`,
-      `Beruf: ${d.beruf || '–'} · Selbstständig: ${jaNein(d.selbststaendig)}`,
-      `Einkommen netto: ${d.netto || '–'} · Geschäftseinkünfte: ${d.geschaeft || '–'}`,
+      `Unternehmen: ${[d.rechtsform, d.beruf].filter(Boolean).join(' · ') || '–'}${d.beschaeftigt_seit ? ' · selbstständig seit ' + d.beschaeftigt_seit : ''}`,
+      `Funktion: ${d.funktion || '–'}`,
+      `Gehalt/Entnahmen: ${d.netto || '–'} · Gewinn: ${d.geschaeft || '–'} (monatlich)`,
       `Negative Merkmale (10 Jahre): ${neg.length ? 'ACHTUNG – ' + neg.join(', ') : 'keine angegeben'}`,
       `Einwilligungen: ${EINWILLIGUNGEN.every((e) => d[e.key]) ? 'alle bestätigt, elektronisch unterschrieben' : 'UNVOLLSTÄNDIG'}`,
     )

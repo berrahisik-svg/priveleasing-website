@@ -45,7 +45,7 @@
     ['Jahresabschluss', 'Aktuellster Jahresabschluss', ''],
     ['BWA letzte', 'Letzte BWA inklusive SuSa', 'mit Summen- und Saldenliste'],
     ['BWA aktuell', 'Aktuelle BWA inklusive SuSa', 'mit Summen- und Saldenliste'],
-    ['Weitere', 'Weitere Unterlagen', 'optional, z. B. Einkommensnachweise'],
+    ['Weitere', 'Weitere Unterlagen', 'optional, z. B. Steuerbescheid oder Kontoauszüge'],
   ]
 
   var JN = [['ja', 'ja'], ['nein', 'nein']]
@@ -55,13 +55,23 @@
       {
         id: 'person',
         kurz: 'Person',
-        titel: 'Angaben zur Person',
-        intro: 'Pflichtfelder sind markiert. Ihre Eingaben bleiben in diesem Browser-Tab erhalten, auch wenn Sie zwischendurch Fotos aufnehmen.',
+        titel: 'Unternehmen und Person',
+        intro: 'Für Selbstständige, Freiberufler und Unternehmer. Pflichtfelder sind markiert. Ihre Eingaben bleiben in diesem Browser-Tab erhalten, auch wenn Sie zwischendurch Fotos aufnehmen.',
         gruppen: [
           {
+            titel: 'Ihr Unternehmen',
             felder: [
-              { k: 'rolle', label: 'Ich fülle aus als', t: 'pillen', opts: [['antragsteller', 'Antragsteller'], ['mitantragsteller', 'Mitantragsteller'], ['buerge', 'Bürge']], req: true, wide: true, def: 'antragsteller' },
-              { k: 'firma', label: 'Firma (Leasingnehmer)', hint: 'Für welches Unternehmen läuft die Anfrage?', req: true, wide: true, ac: 'organization' },
+              { k: 'firma', label: 'Firma', hint: 'Für dieses Unternehmen läuft die Anfrage', req: true, wide: true, ac: 'organization' },
+              { k: 'rechtsform', label: 'Rechtsform', t: 'select', req: true, opts: [['', 'Bitte wählen'], ['Einzelunternehmen', 'Einzelunternehmen'], ['Freiberufler', 'Freiberufler'], ['GbR', 'GbR'], ['OHG / KG', 'OHG / KG'], ['GmbH', 'GmbH'], ['UG (haftungsbeschränkt)', 'UG (haftungsbeschränkt)'], ['GmbH & Co. KG', 'GmbH & Co. KG'], ['AG', 'AG'], ['Sonstige', 'Sonstige']] },
+              { k: 'funktion', label: 'Ihre Funktion', t: 'select', req: true, opts: [['', 'Bitte wählen'], ['Inhaber', 'Inhaber/in'], ['Geschäftsführer', 'Geschäftsführer/in'], ['Gesellschafter-Geschäftsführer', 'Gesellschafter-Geschäftsführer/in'], ['Gesellschafter', 'Gesellschafter/in'], ['Vorstand', 'Vorstand']] },
+              { k: 'beruf', label: 'Geschäftszweig / Tätigkeit', req: true, ph: 'z. B. Logistik, Zahnarztpraxis, IT-Beratung' },
+              { k: 'beschaeftigt_seit', label: 'Selbstständig seit', ph: 'z. B. 01/2015' },
+              { k: 'firmenanschrift', label: 'Firmenanschrift', hint: 'nur wenn abweichend von Ihrer Privatanschrift', wide: true },
+            ],
+          },
+          {
+            titel: 'Angaben zur Person',
+            felder: [
               { k: 'name', label: 'Name', hint: 'ggf. auch Geburtsname', req: true, ac: 'family-name' },
               { k: 'vorname', label: 'Vorname', req: true, ac: 'given-name' },
               { k: 'geburtsdatum', label: 'Geburtsdatum', t: 'date', req: true, ac: 'bday' },
@@ -73,22 +83,12 @@
             ],
           },
           {
-            titel: 'Anschrift und Kontakt',
+            titel: 'Privatanschrift und Kontakt',
             felder: [
               { k: 'strasse', label: 'Straße und Hausnummer', req: true, ac: 'street-address', wide: true },
               { k: 'plz_ort', label: 'PLZ und Ort', req: true, ph: 'z. B. 76133 Karlsruhe' },
               { k: 'telefon', label: 'Telefon', t: 'tel', req: true, ac: 'tel' },
               { k: 'email', label: 'E-Mail', t: 'email', req: true, ac: 'email', wide: true },
-            ],
-          },
-          {
-            titel: 'Beruf',
-            felder: [
-              { k: 'beruf', label: 'Ausgeübter Beruf / Geschäftszweig', req: true },
-              { k: 'beschaeftigt_seit', label: 'Beschäftigt seit', ph: 'z. B. 01/2015' },
-              { k: 'arbeitgeber', label: 'Beschäftigung bei (Firma mit Anschrift)', req: true, wide: true },
-              { k: 'ungekuendigt', label: 'Ungekündigte Stellung', t: 'pillen', opts: JN, req: true },
-              { k: 'selbststaendig', label: 'Selbstständig', t: 'pillen', opts: JN, req: true },
             ],
           },
         ],
@@ -97,15 +97,14 @@
         id: 'einkommen',
         kurz: 'Einkommen',
         titel: 'Einkommen und Ausgaben',
-        intro: 'Monatliche Beträge in Euro. Bitte mindestens Nettoeinkommen oder Geschäftseinkünfte angeben. Nachweise laden Sie im Schritt „Unterlagen“ hoch.',
+        intro: 'Monatliche Beträge in Euro. Bitte mindestens Ihr Gehalt bzw. Ihre Entnahmen oder den Gewinn angeben. BWA und Jahresabschluss laden Sie im Schritt „Unterlagen“ hoch.',
         gruppen: [
           {
             titel: 'Monatliches Einkommen',
             felder: [
-              { k: 'netto', label: 'Nettolohn, -gehalt, sonstige Bezüge', t: 'eur' },
-              { k: 'geschaeft', label: 'Geschäftseinkünfte', hint: 'Entnahmen, Gewinn', t: 'eur' },
-              { k: 'monatsgehaelter', label: 'Anzahl der Monatsgehälter', ph: 'z. B. 12', im: 'numeric' },
-              { k: 'bonus', label: 'Bonuszahlungen', t: 'eur' },
+              { k: 'netto', label: 'Geschäftsführergehalt bzw. Entnahmen', hint: 'netto, pro Monat', t: 'eur' },
+              { k: 'geschaeft', label: 'Gewinn des Unternehmens', hint: 'Monatsdurchschnitt laut letzter BWA oder Jahresabschluss', t: 'eur' },
+              { k: 'bonus', label: 'Ausschüttungen / Tantiemen', hint: 'pro Jahr', t: 'eur' },
               { k: 'mieteinnahmen', label: '(Kalt-)Mieteinnahmen', t: 'eur' },
               { k: 'sonstige_einkuenfte', label: 'Sonstige Einkünfte', hint: 'z. B. Beteiligungen, Kapitalvermögen', t: 'eur' },
             ],
@@ -690,7 +689,7 @@
       if (g.nach === 'unterschrift' && !(unterschrift && unterschrift.gezeichnet)) markieren($('.feld[data-k="unterschrift"]', sec), 'Bitte unterschreiben')
     })
     if (s.id === 'einkommen' && !zustand.werte.netto && !zustand.werte.geschaeft) {
-      markieren($('.feld[data-k="netto"]', sec), 'Bitte Nettoeinkommen oder Geschäftseinkünfte angeben')
+      markieren($('.feld[data-k="netto"]', sec), 'Bitte Gehalt bzw. Entnahmen oder den Gewinn angeben')
       fehler($('.feld[data-k="geschaeft"]', sec), null)
     }
     if (s.id === 'unterlagen') {
@@ -924,7 +923,7 @@
             var e = $('#f-' + k)
             if (e && !e.value && w[k]) e.value = w[k]
           })
-          if (d.name) $('#lead').textContent = 'Guten Tag ' + d.name + '. Hier ergänzen Sie die Angaben für Ihre Anfrage – in etwa zehn Minuten erledigt. Unterlagen laden Sie direkt mit hoch.'
+          if (d.name) $('#lead').textContent = 'Guten Tag ' + d.name + '. Hier ergänzen Sie die Angaben für die Anfrage Ihres Unternehmens – in etwa zehn Minuten erledigt. Unterlagen laden Sie direkt mit hoch.'
           speichern()
         })
         .catch(function () {})
