@@ -24,3 +24,29 @@
   color: var(--on-ink-soft);
   max-width: 40ch;
 }
+
+/* Danke-Seite: weiter zur Selbstauskunft */
+.weiter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+.spaeter {
+  min-height: 3.4rem;
+  padding: 0 0.25rem;
+  font-weight: 500;
+  font-stretch: var(--semi);
+  color: var(--on-ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1px;
+  transition: color var(--t-mid) var(--ease-out);
+}
+.spaeter:hover {
+  color: var(--on-ink);
+}
+.hinweis {
+  font-size: var(--fs-small);
+  color: var(--on-ink-mute);
+}

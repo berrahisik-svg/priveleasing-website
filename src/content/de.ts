@@ -186,6 +186,11 @@ export const de: Dict = {
       text: 'Vielen Dank. Wir melden uns persönlich. Ausführliche Unterlagen benötigen wir erst nach der ersten Prüfung.',
       cta: 'Zur Startseite',
       description: 'Ihre Anfrage an PRIVÉ ist eingegangen. Wir melden uns persönlich.',
+      weiterText: 'Vielen Dank. Damit wir Ihr Angebot direkt prüfen können, geht es jetzt weiter zur Selbstauskunft – in etwa zehn Minuten erledigt.',
+      weiterCta: 'Weiter zur Selbstauskunft',
+      weiterHinweis: 'Sie werden automatisch weitergeleitet.',
+      spaeter: 'Später ausfüllen',
+      spaeterText: 'Kein Problem. Den persönlichen Link zur Selbstauskunft haben wir Ihnen per E-Mail geschickt. Wir melden uns persönlich.',
     },
   },
   form: {
@@ -310,7 +315,7 @@ export const de: Dict = {
         },
         {
           heading: '5. Cookies und Tracking',
-          body: 'Technisch notwendige Speicherung: Ihre Cookie-Entscheidung und ob das Intro bereits gezeigt wurde, werden lokal in Ihrem Browser abgelegt (Art. 6 Abs. 1 lit. f DSGVO, § 25 Abs. 2 TDDDG).\n\nMeta-Pixel: Nur mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) laden wir den Meta-Pixel der Meta Platforms Ireland Ltd., Merrion Road, Dublin 4, Irland. Er erfasst Seitenaufrufe und abgeschlossene Anfragen („Lead“), damit wir den Erfolg unserer Anzeigen auf Facebook und Instagram messen und Zielgruppen bilden können. Dabei werden Daten wie IP-Adresse, Browserinformationen und Cookie-Kennungen an Meta übermittelt, gegebenenfalls auch in die USA; Meta ist unter dem EU-US Data Privacy Framework zertifiziert. Wir und Meta sind für die Erhebung gemeinsam verantwortlich (Art. 26 DSGVO). Ohne Einwilligung wird kein Pixel geladen. Sie können Ihre Entscheidung jederzeit über „Cookie-Einstellungen“ im Fußbereich ändern oder widerrufen. Weitere Informationen: https://www.facebook.com/privacy/policy',
+          body: 'Technisch notwendige Speicherung: Ihre Cookie-Entscheidung und ob das Intro bereits gezeigt wurde, werden lokal in Ihrem Browser abgelegt. Nach einer Anfrage setzen wir für 24 Stunden ein Cookie mit dem verschlüsselten Verweis auf Ihre Selbstauskunft, damit Sie dort direkt weitermachen können; es wird nur auf der Seite der Selbstauskunft gelesen (Art. 6 Abs. 1 lit. f DSGVO, § 25 Abs. 2 TDDDG).\n\nMeta-Pixel: Nur mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) laden wir den Meta-Pixel der Meta Platforms Ireland Ltd., Merrion Road, Dublin 4, Irland. Er erfasst Seitenaufrufe und abgeschlossene Anfragen („Lead“), damit wir den Erfolg unserer Anzeigen auf Facebook und Instagram messen und Zielgruppen bilden können. Dabei werden Daten wie IP-Adresse, Browserinformationen und Cookie-Kennungen an Meta übermittelt, gegebenenfalls auch in die USA; Meta ist unter dem EU-US Data Privacy Framework zertifiziert. Wir und Meta sind für die Erhebung gemeinsam verantwortlich (Art. 26 DSGVO). Ohne Einwilligung wird kein Pixel geladen. Sie können Ihre Entscheidung jederzeit über „Cookie-Einstellungen“ im Fußbereich ändern oder widerrufen. Weitere Informationen: https://www.facebook.com/privacy/policy',
         },
         {
           heading: '6. Speicherdauer',

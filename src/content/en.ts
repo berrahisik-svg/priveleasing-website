@@ -186,6 +186,11 @@ export const en: Dict = {
       text: 'Thank you. We will come back to you personally. Detailed documents are only required after the first review.',
       cta: 'To the home page',
       description: 'Your enquiry to PRIVÉ has been received. We will come back to you personally.',
+      weiterText: 'Thank you. So that we can review your offer right away, the next step is the self-disclosure – it takes about ten minutes.',
+      weiterCta: 'Continue to the self-disclosure',
+      weiterHinweis: 'You will be redirected automatically.',
+      spaeter: 'Fill in later',
+      spaeterText: 'No problem. We have sent you the personal link to the self-disclosure by email. We will come back to you personally.',
     },
   },
   form: {
@@ -310,7 +315,7 @@ export const en: Dict = {
         },
         {
           heading: '5. Cookies and tracking',
-          body: 'Strictly necessary storage: your cookie decision and whether the intro has already been shown are stored locally in your browser (Art. 6 (1) (f) GDPR, § 25 (2) TDDDG).\n\nMeta Pixel: Only with your consent (Art. 6 (1) (a) GDPR, § 25 (1) TDDDG) do we load the Meta Pixel of Meta Platforms Ireland Ltd., Merrion Road, Dublin 4, Ireland. It records page views and completed enquiries (“Lead”) so we can measure the success of our ads on Facebook and Instagram and build audiences. Data such as IP address, browser information and cookie identifiers are transmitted to Meta, possibly also to the USA; Meta is certified under the EU-US Data Privacy Framework. We and Meta are jointly responsible for the collection (Art. 26 GDPR). Without consent, no pixel is loaded. You can change or withdraw your decision at any time via “Cookie settings” in the footer. Further information: https://www.facebook.com/privacy/policy',
+          body: 'Strictly necessary storage: your cookie decision and whether the intro has already been shown are stored locally in your browser. After an enquiry we set a cookie for 24 hours containing the encrypted reference to your self-disclosure, so you can continue there directly; it is only read on the self-disclosure page (Art. 6 (1) (f) GDPR, § 25 (2) TDDDG).\n\nMeta Pixel: Only with your consent (Art. 6 (1) (a) GDPR, § 25 (1) TDDDG) do we load the Meta Pixel of Meta Platforms Ireland Ltd., Merrion Road, Dublin 4, Ireland. It records page views and completed enquiries (“Lead”) so we can measure the success of our ads on Facebook and Instagram and build audiences. Data such as IP address, browser information and cookie identifiers are transmitted to Meta, possibly also to the USA; Meta is certified under the EU-US Data Privacy Framework. We and Meta are jointly responsible for the collection (Art. 26 GDPR). Without consent, no pixel is loaded. You can change or withdraw your decision at any time via “Cookie settings” in the footer. Further information: https://www.facebook.com/privacy/policy',
         },
         {
           heading: '6. Storage period',

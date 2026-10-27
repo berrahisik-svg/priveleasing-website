@@ -64,7 +64,7 @@ export function oeffnen(token) {
 export function neuerLink({ name = '', firma = '', email = '', telefon = '', objekt = '' } = {}) {
   const id = crypto.randomBytes(5).toString('hex').toUpperCase()
   const z = versiegeln({ i: id, n: name, f: firma, e: email, t: telefon, o: String(objekt || '').slice(0, 80) }, 90)
-  return { id, link: `${SITE}/selbstauskunft?z=${z}` }
+  return { id, z, link: `${SITE}/selbstauskunft?z=${z}` }
 }
 
 /** Allgemeiner Link ohne Vorausfüllung (z. B. per WhatsApp weitergeben). */

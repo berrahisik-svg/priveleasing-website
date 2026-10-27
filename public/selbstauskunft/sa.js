@@ -844,8 +844,26 @@
       p.delete('z')
       try { history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : '') + location.hash) } catch (e) {}
     }
+    // Direkt nach einer Anfrage: persönlicher Link kommt aus dem Cookie (nie über die URL)
+    if (!z) {
+      var keks = document.cookie.match(/(?:^|;\s*)prive_sa=([^;]+)/)
+      if (keks) zustand.z = decodeURIComponent(keks[1])
+    }
+    try { document.cookie = 'prive_sa=; Path=/selbstauskunft; Max-Age=0; Secure; SameSite=Lax' } catch (e) {}
+    var vonAnfrage = p.get('von') === 'anfrage'
+    if (vonAnfrage) {
+      zustand.modus = 'selbstauskunft'
+      p.delete('von')
+      try { history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : '') + location.hash) } catch (e) {}
+    }
     if (p.get('modus') === 'unterlagen') zustand.modus = 'unterlagen'
     aufbauen()
+    if (vonAnfrage) {
+      var hin = $('#link-hinweis')
+      hin.textContent = 'Vielen Dank, Ihre Anfrage ist eingegangen. Jetzt fehlt nur noch Ihre Selbstauskunft – danach prüfen wir Ihr Angebot direkt. Den Link haben wir Ihnen zusätzlich per E-Mail geschickt, falls Sie später weitermachen möchten.'
+      hin.className = 'hinweis-box ok'
+      hin.hidden = false
+    }
 
     $('#weiter').addEventListener('click', function () {
       if (!pruefen()) return

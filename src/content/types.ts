@@ -91,7 +91,7 @@ export type Dict = {
     sourcing: { title: string; text: string }
     kontakt: { title: string; text: string; companyTitle: string; firm: string; firmLabel: string; seat: string; seatLabel: string; whatsappLabel: string; phoneLabel: string; mailLabel: string; note: string; ctaTitle: string }
     notFound: { title: string; text: string; cta: string }
-    danke: { title: string; text: string; cta: string; description: string }
+    danke: { title: string; text: string; cta: string; description: string; weiterText: string; weiterCta: string; weiterHinweis: string; spaeter: string; spaeterText: string }
   }
   form: {
     labels: Record<FieldName, string>

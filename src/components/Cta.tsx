@@ -6,9 +6,16 @@ import s from './Cta.module.css'
 type Tone = 'ink' | 'alu'
 
 /** Hauptaktion. Form des Bogens aus dem Signet: oben rund, unten gerade. */
-export function ArchButton({ to, children, tone = 'ink', className }: { to: string; children: ReactNode; tone?: Tone; className?: string }) {
+export function ArchButton({ to, href, children, tone = 'ink', className }: { to?: string; href?: string; children: ReactNode; tone?: Tone; className?: string }) {
+  if (href)
+    return (
+      <a href={href} className={`${s.arch} ${className ?? ''}`} data-tone={tone}>
+        <span className={s.archLabel}>{children}</span>
+        <Arrow className={s.archArrow} />
+      </a>
+    )
   return (
-    <Link to={to} className={`${s.arch} ${className ?? ''}`} data-tone={tone}>
+    <Link to={to ?? '/'} className={`${s.arch} ${className ?? ''}`} data-tone={tone}>
       <span className={s.archLabel}>{children}</span>
       <Arrow className={s.archArrow} />
     </Link>

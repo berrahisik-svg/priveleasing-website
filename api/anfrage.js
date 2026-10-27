@@ -162,6 +162,12 @@ export default async function handler(req, res) {
     console.error('Kopie', e)
   }
 
+  // Direkt weiter zur Selbstauskunft: Danke-Seite (zählt den Lead) leitet nach ein paar Sekunden weiter.
+  // Der persönliche Link liegt nur in einem Cookie für /selbstauskunft, damit er nie in einer URL (und beim Meta-Pixel) landet.
+  if (sa && lang === 'de') {
+    res.setHeader('Set-Cookie', `prive_sa=${sa.z}; Path=/selbstauskunft; Max-Age=86400; Secure; SameSite=Lax`)
+    return res.redirect(303, SITE + '/danke?weiter=1')
+  }
   return res.redirect(303, SITE + (lang === 'en' ? '/en/thank-you' : '/danke'))
 }
 
