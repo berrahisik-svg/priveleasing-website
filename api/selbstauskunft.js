@@ -171,10 +171,14 @@ export default async function handler(req, res) {
       const geplant = (Array.isArray(body.dateien) ? body.dateien : []).slice(0, 30).map((f) => ({ name: rein(f?.name, 120), art: rein(f?.art, 40) }))
 
       // Prüfen
+      // Pflichtfelder laut Volkan: Name, Vorname, Telefon, E-Mail, Adresse, Firma, Unterschrift
       const fehlt = []
       if (!d.name) fehlt.push('Name')
-      if (modus === 'selbstauskunft' && !d.vorname) fehlt.push('Vorname')
-      if (!d.email && !d.telefon) fehlt.push('E-Mail oder Telefon')
+      if (!d.vorname) fehlt.push('Vorname')
+      if (!d.telefon) fehlt.push('Telefon')
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)) fehlt.push('E-Mail')
+      if (!d.firma) fehlt.push('Firma')
+      if (modus === 'selbstauskunft' && (!d.strasse || !d.plz_ort)) fehlt.push('Adresse')
       if (modus === 'selbstauskunft') {
         for (const e of EINWILLIGUNGEN) if (!d[e.key]) fehlt.push(e.titel)
         if (!/^data:image\/png;base64,/.test(body.unterschrift || '')) fehlt.push('Unterschrift')

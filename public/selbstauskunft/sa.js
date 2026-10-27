@@ -61,7 +61,7 @@
           {
             felder: [
               { k: 'rolle', label: 'Ich fülle aus als', t: 'pillen', opts: [['antragsteller', 'Antragsteller'], ['mitantragsteller', 'Mitantragsteller'], ['buerge', 'Bürge']], req: true, wide: true, def: 'antragsteller' },
-              { k: 'firma', label: 'Firma (Leasingnehmer)', hint: 'Für welches Unternehmen läuft die Anfrage?', wide: true, ac: 'organization' },
+              { k: 'firma', label: 'Firma (Leasingnehmer)', hint: 'Für welches Unternehmen läuft die Anfrage?', req: true, wide: true, ac: 'organization' },
               { k: 'name', label: 'Name', hint: 'ggf. auch Geburtsname', req: true, ac: 'family-name' },
               { k: 'vorname', label: 'Vorname', req: true, ac: 'given-name' },
               { k: 'geburtsdatum', label: 'Geburtsdatum', t: 'date', req: true, ac: 'bday' },
@@ -188,9 +188,9 @@
             felder: [
               { k: 'vorname', label: 'Vorname', req: true, ac: 'given-name' },
               { k: 'name', label: 'Name', req: true, ac: 'family-name' },
-              { k: 'firma', label: 'Firma', ac: 'organization', wide: true },
+              { k: 'firma', label: 'Firma', req: true, ac: 'organization', wide: true },
               { k: 'email', label: 'E-Mail', t: 'email', req: true, ac: 'email' },
-              { k: 'telefon', label: 'Telefon', t: 'tel', ac: 'tel' },
+              { k: 'telefon', label: 'Telefon', t: 'tel', req: true, ac: 'tel' },
             ],
           },
         ],
