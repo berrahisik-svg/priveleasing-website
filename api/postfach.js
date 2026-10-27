@@ -14,6 +14,7 @@ import { einordnen, antwortAnfrage, antwortUnterlagen, antwortRueckfrage, absage
 import { mitSignatur } from '../server/signatur.js'
 import { formularAusfuellen } from '../server/formular.js'
 import { karteAnlegen, beschreibung } from '../server/trello.js'
+import { neuerLink, mitSignaturUndLink, offenAnlegen, erinnerungsLauf } from '../server/selbstauskunft.js'
 
 const INFO = (process.env.MAIL_USER || 'info@priveleasing.de').toLowerCase()
 const EIGENE = new Set([INFO, (process.env.TRELLO_BOARD_MAIL || '').toLowerCase()])
@@ -40,7 +41,7 @@ async function verarbeiten(kopf, ordner, trocken = false) {
   const protokoll = { von: from, betreff: mail.subject }
 
   // Kopien der Website-Anfragen (von uns selbst an info@): bleiben ungelesen im Posteingang, nur markieren
-  if (EIGENE.has(from) && /^(Neue Website-Anfrage|Privatperson)/i.test(mail.subject)) {
+  if (EIGENE.has(from) && /^(Neue Website-Anfrage|Privatperson|Selbstauskunft|Unterlagen nachgereicht|\[Upload unvollständig\])/i.test(mail.subject)) {
     if (!trocken) await markChecked(kopf.id, kopf.changeKey)
     return { ...protokoll, art: 'website-kopie' }
   }
@@ -76,6 +77,7 @@ async function verarbeiten(kopf, ordner, trocken = false) {
 
   let pdfDatei = null
   let antwort = null
+  let sa = null
   if (e.art === 'anfrage' && e.angaben?.gewerblich === false) {
     // Privatperson: freundliche Absage, keine Karte, Mail bleibt im Posteingang (Kategorie)
     await sendMail({ to: [from], subject: /^(re|aw|wg|fwd?):/i.test(mail.subject) ? mail.subject : 'AW: ' + mail.subject, html: mitSignatur(absagePrivat({ name: e.angaben?.name || mail.fromName })), inReplyTo: mail.messageId })
@@ -90,7 +92,12 @@ async function verarbeiten(kopf, ordner, trocken = false) {
     } catch (err) {
       console.error('PDF', err.message)
     }
-    antwort = await antwortAnfrage({ fromName: mail.fromName || a.name || '', subject: mail.subject, body: mail.body, angaben: a })
+    try {
+      sa = neuerLink({ name: a.name || mail.fromName, firma: a.firma, email: from, telefon: a.telefon, objekt: a.objekt })
+    } catch (err) {
+      console.error('Selbstauskunft-Link', err.message)
+    }
+    antwort = await antwortAnfrage({ fromName: mail.fromName || a.name || '', subject: mail.subject, body: mail.body, angaben: a, link: sa?.link || '' })
   } else if (e.art === 'unterlagen') {
     antwort = await antwortUnterlagen({ fromName: mail.fromName || e.angaben?.name || '', attachments: mail.attachments })
   } else if (e.art === 'rueckfrage') {
@@ -110,7 +117,9 @@ async function verarbeiten(kopf, ordner, trocken = false) {
         zusammenfassung: e.zusammenfassung,
         von: `${mail.fromName} <${from}>`,
         zeit,
-        extra: 'Ursprüngliche Mail:\n' + mail.body.slice(0, 2500) + (antwort ? '\n\nAutomatische Antwort:\n' + antwort : '\n\nKeine automatische Antwort – bitte manuell antworten.'),
+        extra:
+          (sa ? 'Persönlicher Selbstauskunft-Link (z. B. per WhatsApp weiterleiten):\n' + sa.link + '\n\n' : '') +
+          'Ursprüngliche Mail:\n' + mail.body.slice(0, 2500) + (antwort ? '\n\nAutomatische Antwort:\n' + antwort : '\n\nKeine automatische Antwort – bitte manuell antworten.'),
       }),
       dateien: [...anhaenge, ...(pdfDatei ? [pdfDatei] : [])],
     })
@@ -123,8 +132,13 @@ async function verarbeiten(kopf, ordner, trocken = false) {
   // Antwort senden
   if (antwort) {
     const betreff = /^(re|aw|wg|fwd?):/i.test(mail.subject) ? mail.subject : 'AW: ' + mail.subject
-    await sendMail({ to: [from], subject: betreff, html: mitSignatur(antwort), files: pdfDatei ? [pdfDatei] : [], inReplyTo: mail.messageId })
+    await sendMail({ to: [from], subject: betreff, html: sa ? mitSignaturUndLink(antwort, sa.link) : mitSignatur(antwort), files: pdfDatei ? [pdfDatei] : [], inReplyTo: mail.messageId })
     protokoll.antwort = 'gesendet'
+    if (sa) {
+      const a = e.angaben || {}
+      await offenAnlegen({ id: sa.id, link: sa.link, name: a.name || mail.fromName, firma: a.firma, email: from, telefon: a.telefon, objekt: a.objekt })
+      protokoll.selbstauskunft = 'Link gesendet'
+    }
   } else {
     protokoll.antwort = 'manuell'
   }
@@ -158,7 +172,17 @@ export default async function handler(req, res) {
         ergebnisse.push({ betreff: kopf.subject, fehler: err.message })
       }
     }
-    res.status(200).json({ verarbeitet: ergebnisse.length, ergebnisse, dauer_ms: Date.now() - start })
+    // Selbstauskunft: Erinnerung nach 48 Stunden und abgebrochene Uploads (nur wenn noch Zeit bleibt)
+    let selbstauskunft = 'übersprungen (keine Zeit)'
+    if (Date.now() - start < 48_000) {
+      try {
+        selbstauskunft = await erinnerungsLauf({ bis: start + 56_000, trocken })
+      } catch (err) {
+        console.error('Erinnerung', err)
+        selbstauskunft = { fehler: err.message }
+      }
+    }
+    res.status(200).json({ verarbeitet: ergebnisse.length, ergebnisse, selbstauskunft, dauer_ms: Date.now() - start })
   } catch (err) {
     console.error(err)
     res.status(500).json({ fehler: err.message })

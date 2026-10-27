@@ -9,6 +9,7 @@ import { formularAusfuellen, ausAnfrage } from '../server/formular.js'
 import { karteAnlegen, beschreibung } from '../server/trello.js'
 import { alsHtml, antwortAnfrage, absagePrivat, PRIVE_KONTEXT } from '../server/ki.js'
 import { mitSignatur } from '../server/signatur.js'
+import { neuerLink, mitSignaturUndLink, offenAnlegen } from '../server/selbstauskunft.js'
 
 export const config = { api: { bodyParser: false } }
 
@@ -94,13 +95,24 @@ export default async function handler(req, res) {
   const angaben = Object.fromEntries(Object.entries(felder).filter(([k]) => !k.startsWith('_') && k !== 'datenschutz'))
   const titel = `${felder.firma ? felder.firma + ' – ' : ''}${felder.name} · ${(felder.suche || felder.objektart || formular).slice(0, 40)} · ${art === 'einreichen' ? 'Objekt' : art === 'sourcing' ? 'Sourcing' : 'Anfrage'}`
 
+  // Persönlicher Link zur Online-Selbstauskunft (bei Fehlern läuft alles wie bisher ohne Link weiter)
+  let sa = null
+  if (felder.email) {
+    try {
+      sa = neuerLink({ name: felder.name, firma: felder.firma, email: felder.email, telefon: felder.telefon, objekt: pdfDaten.objekt })
+    } catch (e) {
+      console.error('Selbstauskunft-Link', e.message)
+    }
+  }
+  const linkZeile = sa ? `\n\nPersönlicher Selbstauskunft-Link (z. B. per WhatsApp weiterleiten):\n${sa.link}` : ''
+
   // 2 Trello-Karte (mit Original-Anhängen und PDF)
   const ergebnisse = {}
   try {
     ergebnisse.trello = await karteAnlegen({
       titel,
       label,
-      beschreibung: beschreibung({ quelle: `Website · ${formular || 'Formular'} (${lang})`, angaben, von: `${felder.name} <${felder.email || '-'}>` }),
+      beschreibung: beschreibung({ quelle: `Website · ${formular || 'Formular'} (${lang})`, angaben, von: `${felder.name} <${felder.email || '-'}>`, extra: linkZeile.trim() }),
       dateien: [...dateien, ...(pdfDatei ? [pdfDatei] : [])],
     })
   } catch (e) {
@@ -118,14 +130,16 @@ export default async function handler(req, res) {
           .map(([k, v]) => `${k}: ${v}`)
           .join('\n'),
         angaben: pdfDaten,
+        link: sa?.link || '',
       })
       await sendMail({
         to: [felder.email],
         subject: lang === 'en' ? 'Your enquiry at PRIVÉ – next steps' : 'Ihre Anfrage bei PRIVÉ – nächste Schritte',
-        html: mitSignatur(text),
+        html: sa ? mitSignaturUndLink(text, sa.link) : mitSignatur(text),
         files: pdfDatei ? [pdfDatei] : [],
       })
       ergebnisse.antwort = true
+      if (sa) await offenAnlegen({ id: sa.id, link: sa.link, name: felder.name, firma: felder.firma, email: felder.email, telefon: felder.telefon, objekt: pdfDaten.objekt })
     } catch (e) {
       console.error('Antwort', e)
       ergebnisse.antwort = false
@@ -139,7 +153,8 @@ export default async function handler(req, res) {
       subject: `Neue Website-Anfrage: ${titel}`,
       html: alsHtml(
         beschreibung({ quelle: `Website · ${formular || 'Formular'}`, angaben, von: `${felder.name} <${felder.email || '-'}>` }) +
-          `\n\nTrello: ${ergebnisse.trello?.ok ? 'Karte angelegt (' + ergebnisse.trello.via + ')' : 'FEHLER'} · Antwort an Kunde: ${ergebnisse.antwort ? 'gesendet' : 'nicht gesendet'}`,
+          `\n\nTrello: ${ergebnisse.trello?.ok ? 'Karte angelegt (' + ergebnisse.trello.via + ')' : 'FEHLER'} · Antwort an Kunde: ${ergebnisse.antwort ? 'gesendet' : 'nicht gesendet'}` +
+          linkZeile,
       ),
       files: [...dateien, ...(pdfDatei ? [pdfDatei] : [])],
     })

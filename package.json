@@ -12,6 +12,7 @@
     "lokal": "node server/lokal.js"
   },
   "dependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
     "busboy": "^1.6.0",
     "httpntlm": "^1.8.13",
     "lenis": "^1.3.26",

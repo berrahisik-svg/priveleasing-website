@@ -25,7 +25,7 @@ function json(text) {
 export const PRIVE_KONTEXT = `PRIVÉ (priveleasing.de) ist ein Vermittler für Leasing, Finanzierung und Mietkauf ausgewählter Luxusgüter:
 Fahrzeuge (Sport- und Luxuswagen, meist ab 150.000 € netto), Yachten und Boote, Aviation, Luxury Toys (Jetski, Quad u. ä.) und Uhren.
 PRIVÉ ist eine Marke der Lead Lab Consulting FZCO, Dubai. Ansprechpartner: Volkan Ertas (Geschäftsführer). Telefon 089 41616310, info@priveleasing.de.
-Ablauf: Anfrage → Kundenunterlagen und Selbstauskunft (PDF, 4 Seiten) → Prüfung über Leasing- und Finanzierungspartner → persönliches Angebot. Rückmeldung innerhalb von 48 Stunden an Werktagen.
+Ablauf: Anfrage → Selbstauskunft online ausfüllen und Unterlagen hochladen (persönlicher Link per E-Mail, alternativ PDF „Kundenunterlagen und Selbstauskunft“) → Prüfung über Leasing- und Finanzierungspartner → persönliches Angebot. Rückmeldung innerhalb von 48 Stunden an Werktagen.
 Es gibt keine Standardkonditionen: Laufzeit, Anzahlung, Restwert und Rate werden je Objekt und Bonität individuell strukturiert. Bei schwächerer Bonität ggf. mit Kaution oder höherer Anzahlung.
 WICHTIG: PRIVÉ arbeitet ausschließlich mit Unternehmen, Selbstständigen und Freiberuflern (gewerbliche Kunden). Privatpersonen können nicht bedient werden.
 Leasing: Objekt bleibt beim Leasinggeber, Rate meist Betriebsausgabe, Rückgabe oder Kauf am Ende. Finanzierung: Objekt gehört dem Kunden, steht in der Bilanz. Mietkauf: Eigentum geht mit letzter Rate über.`
@@ -74,7 +74,7 @@ Regeln: "anfrage" = jemand will ein Objekt leasen/finanzieren/kaufen oder fragt 
 }
 
 /** Antwort auf eine neue Anfrage (mit Hinweis auf das beiliegende Formular). */
-export async function antwortAnfrage({ fromName, subject, body, angaben }) {
+export async function antwortAnfrage({ fromName, subject, body, angaben, link = '' }) {
   const system = `${PRIVE_KONTEXT}\n\n${LEITPLANKEN}\n\nDu schreibst im Namen von Volkan Ertas die erste Antwort auf eine Anfrage. Länge: 90 bis 160 Wörter.`
   const user = `Anfrage von ${fromName}:
 Betreff: ${subject}
@@ -85,7 +85,11 @@ Erkannte Angaben: ${JSON.stringify(angaben)}
 
 Schreibe die Antwort. Aufbau:
 1. Dank für die Anfrage, das Objekt in einem Satz aufgreifen (wenn erkennbar).
-2. Nächster Schritt: Im Anhang liegt unser Dokument „Kundenunterlagen und Selbstauskunft“, bereits mit den bekannten Angaben vorausgefüllt. Bitte die Selbstauskunft (Seiten 2 bis 4) ausfüllen, unterschreiben und die auf Seite 1 genannten Unterlagen als PDF beilegen.
+${
+    link
+      ? `2. Nächster Schritt: Die Selbstauskunft bitte bequem online ausfüllen und die benötigten Unterlagen direkt dort hochladen – über den persönlichen Link. Schreibe dafür an dieser Stelle eine eigene Zeile, die nur aus dem Platzhalter [[LINK]] besteht (dort erscheinen automatisch der Button und die Liste der Unterlagen; nenne die Unterlagen deshalb nicht selbst). Danach ein kurzer Satz: Alternativ liegt das Dokument „Kundenunterlagen und Selbstauskunft“ als PDF im Anhang, bereits mit den bekannten Angaben vorausgefüllt.`
+      : `2. Nächster Schritt: Im Anhang liegt unser Dokument „Kundenunterlagen und Selbstauskunft“, bereits mit den bekannten Angaben vorausgefüllt. Bitte die Selbstauskunft (Seiten 2 bis 4) ausfüllen, unterschreiben und die auf Seite 1 genannten Unterlagen als PDF beilegen.`
+  }
 3. Was dann passiert: Prüfung über unsere Partner, persönliches Angebot, Rückmeldung innerhalb von 48 Stunden nach Eingang der Unterlagen. Für Rückfragen telefonisch erreichbar.
 4. Grußformel „Mit besten Grüßen“ (ohne Namen darunter).
 Nur den Mailtext ausgeben, keinen Betreff.`

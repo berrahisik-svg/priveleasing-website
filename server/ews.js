@@ -207,3 +207,116 @@ export async function inboxStatus() {
   )
   return { total: Number(tag(xml, 'TotalCount') || 0), unread: Number(tag(xml, 'UnreadCount') || 0) }
 }
+
+/* ───────── Selbstauskunft: Entwürfe mit Anhängen, Merkzettel-Ordner ───────── */
+
+function itemIdAus(xml) {
+  const m = xml.match(/<t:ItemId Id="([^"]+)" ChangeKey="([^"]+)"/)
+  return m ? { id: m[1], changeKey: m[2] } : null
+}
+
+/**
+ * Nachricht nur speichern (nicht senden) – in einem Ordner (FolderId) oder „drafts“.
+ * Gibt { id, changeKey } zurück.
+ */
+export async function saveMessage({ folderId = '', to = [], subject, html, files = [] }) {
+  const rcpt = (list) => list.map((a) => `<t:Mailbox><t:EmailAddress>${esc(a)}</t:EmailAddress></t:Mailbox>`).join('')
+  const ziel = folderId ? `<t:FolderId Id="${esc(folderId)}"/>` : '<t:DistinguishedFolderId Id="drafts"/>'
+  const xml = await soap(
+    `<m:CreateItem MessageDisposition="SaveOnly"><m:SavedItemFolderId>${ziel}</m:SavedItemFolderId>` +
+      `<m:Items><t:Message><t:Subject>${esc(subject)}</t:Subject><t:Body BodyType="HTML">${esc(html)}</t:Body>` +
+      attachmentsXml(files) +
+      (to.length ? `<t:ToRecipients>${rcpt(to)}</t:ToRecipients>` : '') +
+      `</t:Message></m:Items></m:CreateItem>`,
+  )
+  return itemIdAus(xml)
+}
+
+/** Eine Datei an eine gespeicherte Nachricht hängen. */
+export async function addAttachment(itemId, file) {
+  await soap(
+    `<m:CreateAttachment><m:ParentItemId Id="${esc(itemId)}"/><m:Attachments>` +
+      `<t:FileAttachment><t:Name>${esc(file.name)}</t:Name><t:ContentType>${esc(file.contentType || 'application/octet-stream')}</t:ContentType>` +
+      `<t:Content>${Buffer.isBuffer(file.content) ? file.content.toString('base64') : file.content}</t:Content></t:FileAttachment>` +
+      `</m:Attachments></m:CreateAttachment>`,
+  )
+}
+
+/** Aktuellen ChangeKey einer Nachricht holen. */
+export async function currentChangeKey(itemId) {
+  const xml = await soap(`<m:GetItem><m:ItemShape><t:BaseShape>IdOnly</t:BaseShape></m:ItemShape><m:ItemIds><t:ItemId Id="${esc(itemId)}"/></m:ItemIds></m:GetItem>`)
+  return itemIdAus(xml)?.changeKey
+}
+
+/** Betreff einer gespeicherten Nachricht ändern. */
+export async function setSubject(itemId, subject) {
+  const ck = await currentChangeKey(itemId)
+  await soap(
+    `<m:UpdateItem ConflictResolution="AlwaysOverwrite" MessageDisposition="SaveOnly"><m:ItemChanges><t:ItemChange>` +
+      `<t:ItemId Id="${esc(itemId)}" ChangeKey="${esc(ck)}"/><t:Updates><t:SetItemField><t:FieldURI FieldURI="item:Subject"/>` +
+      `<t:Message><t:Subject>${esc(subject)}</t:Subject></t:Message></t:SetItemField></t:Updates></t:ItemChange></m:ItemChanges></m:UpdateItem>`,
+  )
+}
+
+/** Gespeicherte Nachricht abschicken (Kopie in „Gesendete Elemente“). */
+export async function sendSaved(itemId) {
+  const ck = await currentChangeKey(itemId)
+  await soap(
+    `<m:SendItem SaveItemToFolder="true"><m:ItemIds><t:ItemId Id="${esc(itemId)}" ChangeKey="${esc(ck)}"/></m:ItemIds>` +
+      `<m:SavedItemFolderId><t:DistinguishedFolderId Id="sentitems"/></m:SavedItemFolderId></m:SendItem>`,
+  )
+}
+
+/**
+ * Nachrichten in einem Ordner suchen.
+ * vor: nur Elemente, die vor diesem Zeitpunkt angelegt wurden (Date)
+ * ohneKategorie: Elemente mit dieser Kategorie auslassen
+ * betreffEnthaelt: nur Elemente, deren Betreff diesen Text enthält
+ */
+export async function findInFolder(folderId, { max = 50, vor = null, ohneKategorie = '', betreffEnthaelt = '' } = {}) {
+  const bed = []
+  if (vor)
+    bed.push(
+      `<t:IsLessThanOrEqualTo><t:FieldURI FieldURI="item:DateTimeCreated"/><t:FieldURIOrConstant><t:Constant Value="${vor.toISOString().replace(/\.\d+Z$/, 'Z')}"/></t:FieldURIOrConstant></t:IsLessThanOrEqualTo>`,
+    )
+  if (ohneKategorie)
+    bed.push(
+      `<t:Not><t:Contains ContainmentMode="Substring" ContainmentComparison="IgnoreCase"><t:FieldURI FieldURI="item:Categories"/><t:Constant Value="${esc(ohneKategorie)}"/></t:Contains></t:Not>`,
+    )
+  if (betreffEnthaelt)
+    bed.push(
+      `<t:Contains ContainmentMode="Substring" ContainmentComparison="IgnoreCase"><t:FieldURI FieldURI="item:Subject"/><t:Constant Value="${esc(betreffEnthaelt)}"/></t:Contains>`,
+    )
+  const restriction = bed.length === 0 ? '' : `<m:Restriction>${bed.length === 1 ? bed[0] : `<t:And>${bed.join('')}</t:And>`}</m:Restriction>`
+  const xml = await soap(
+    `<m:FindItem Traversal="Shallow"><m:ItemShape><t:BaseShape>IdOnly</t:BaseShape>` +
+      `<t:AdditionalProperties><t:FieldURI FieldURI="item:Subject"/><t:FieldURI FieldURI="item:DateTimeCreated"/><t:FieldURI FieldURI="item:Categories"/></t:AdditionalProperties></m:ItemShape>` +
+      `<m:IndexedPageItemView MaxEntriesReturned="${max}" Offset="0" BasePoint="Beginning"/>` +
+      restriction +
+      `<m:SortOrder><t:FieldOrder Order="Ascending"><t:FieldURI FieldURI="item:DateTimeCreated"/></t:FieldOrder></m:SortOrder>` +
+      `<m:ParentFolderIds><t:FolderId Id="${esc(folderId)}"/></m:ParentFolderIds></m:FindItem>`,
+  )
+  const items = []
+  for (const m of xml.matchAll(/<t:Message>([\s\S]*?)<\/t:Message>/g)) {
+    const x = m[1]
+    const id = itemIdAus(x)
+    items.push({
+      id: id?.id,
+      changeKey: id?.changeKey,
+      subject: unesc(tag(x, 'Subject') || ''),
+      created: tag(x, 'DateTimeCreated'),
+      categories: [...(tag(x, 'Categories') || '').matchAll(/<t:String>([^<]*)<\/t:String>/g)].map((c) => unesc(c[1])),
+    })
+  }
+  return items
+}
+
+/** Kategorie setzen (ersetzt vorhandene Kategorien). */
+export async function setCategory(itemId, kategorie) {
+  const ck = await currentChangeKey(itemId)
+  await soap(
+    `<m:UpdateItem ConflictResolution="AlwaysOverwrite" MessageDisposition="SaveOnly"><m:ItemChanges><t:ItemChange>` +
+      `<t:ItemId Id="${esc(itemId)}" ChangeKey="${esc(ck)}"/><t:Updates><t:SetItemField><t:FieldURI FieldURI="item:Categories"/>` +
+      `<t:Message><t:Categories><t:String>${esc(kategorie)}</t:String></t:Categories></t:Message></t:SetItemField></t:Updates></t:ItemChange></m:ItemChanges></m:UpdateItem>`,
+  )
+}
