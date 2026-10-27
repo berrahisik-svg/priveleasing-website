@@ -104,7 +104,7 @@ export default async function handler(req, res) {
       console.error('Selbstauskunft-Link', e.message)
     }
   }
-  const linkZeile = sa ? `\n\nPersönlicher Selbstauskunft-Link (z. B. per WhatsApp weiterleiten):\n${sa.link}` : ''
+  const linkZeile = sa ? `\n\nVorgang ${sa.id}\nPersönlicher Selbstauskunft-Link (z. B. per WhatsApp weiterleiten):\n${sa.link}` : ''
 
   // 2 Trello-Karte (mit Original-Anhängen und PDF)
   const ergebnisse = {}

@@ -15,6 +15,7 @@ import { mitSignatur } from '../server/signatur.js'
 import { selbstauskunftPdf } from '../server/selbstauskunft-pdf.js'
 import { EINWILLIGUNGEN } from '../server/selbstauskunft-texte.js'
 import { ORDNER, versiegeln, oeffnen, offenErledigt, erinnerungsLauf } from '../server/selbstauskunft.js'
+import { trelloApi, trelloEinsortieren } from '../server/trello.js'
 
 export const config = { api: { bodyParser: false } }
 
@@ -43,7 +44,8 @@ function lesen(req, max) {
 }
 
 const rein = (s, max = 300) => String(s ?? '').replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max)
-const empfaenger = () => [INFO, BOARD].filter(Boolean)
+// Mit Trello-API kommt die Selbstauskunft an die bestehende Karte (siehe trelloEinsortieren), sonst neue Karte per Board-Mail
+const empfaenger = () => (trelloApi() ? [INFO] : [INFO, BOARD].filter(Boolean))
 
 function dateiname(name, art) {
   const n = rein(name, 120).replace(/[\\/:*?"<>|]/g, '_') || 'Datei'
@@ -198,12 +200,18 @@ export default async function handler(req, res) {
         })
       }
       const betreff = `${modus === 'selbstauskunft' ? 'Selbstauskunft' : 'Unterlagen nachgereicht'}: ${d.firma ? d.firma + ' – ' : ''}${anzeigeName}`.slice(0, 200)
-      const html = alsPre(zusammenfassung({ modus, d, link, dateien: geplant, vorgang }))
+      const text = zusammenfassung({ modus, d, link, dateien: geplant, vorgang })
+      const html = alsPre(text)
       const pdfDatei = pdf ? [{ name: `Selbstauskunft – ${anzeigeName || 'Kunde'}.pdf`, contentType: 'application/pdf', content: pdf }] : []
 
       // Ohne Dateien: sofort senden
       if (!geplant.length) {
         await sendMail({ to: empfaenger(), subject: betreff, html, files: pdfDatei })
+        try {
+          await trelloEinsortieren({ vorgang: link?.i || '', email: d.email, betreff, text, dateien: pdfDatei })
+        } catch (e) {
+          console.error('Trello', e.message)
+        }
         if (modus === 'selbstauskunft' && link?.i) await offenErledigt(link.i)
         await kundenBestaetigung({ modus, email: d.email, name: anzeigeName, anzahl: 0, pdf })
         return res.status(200).json({ ok: true, fertig: true })
@@ -258,20 +266,41 @@ export default async function handler(req, res) {
       const fehl = (Array.isArray(body.fehlgeschlagen) ? body.fehlgeschlagen : []).map((n) => rein(n, 120)).filter(Boolean).slice(0, 30)
       const zuGross = (Array.isArray(body.zuGross) ? body.zuGross : []).map((n) => rein(n, 120)).filter(Boolean).slice(0, 30)
       const angekommen = Math.max(0, (sess.k || 0) - fehl.length)
-      // Kopie der Selbstauskunft für den Kunden aus der gespeicherten Nachricht holen
+      // Gespeicherte Nachricht lesen: PDF-Kopie für den Kunden, bei Trello-API alle Dateien für die Karte
       let pdf = null
-      if (sess.m === 'selbstauskunft') {
-        try {
-          const item = await getItem(sess.d)
+      let item = null
+      let alle = null
+      try {
+        item = await getItem(sess.d)
+        if (trelloApi()) {
+          alle = []
+          for (const a of item.attachments) {
+            try {
+              alle.push({ name: a.name, contentType: a.contentType, content: await getAttachment(a.id) })
+            } catch (e) {
+              console.error('Anhang', a.name, e.message)
+            }
+          }
+          pdf = alle.find((x) => /^Selbstauskunft – .*\.pdf$/i.test(x.name))?.content || null
+        } else if (sess.m === 'selbstauskunft') {
           const a = item.attachments.find((x) => /^Selbstauskunft – .*\.pdf$/i.test(x.name))
           if (a) pdf = await getAttachment(a.id)
+        }
+      } catch (e) {
+        console.error('Nachricht lesen', e.message)
+      }
+      if (sess.m !== 'selbstauskunft') pdf = null
+      const nicht = fehl.length + zuGross.length
+      const betreff = nicht ? `${sess.b} (${nicht} Datei${nicht > 1 ? 'en' : ''} nicht übertragen – Kunde schickt sie per E-Mail)` : sess.b
+      if (nicht) await setSubject(sess.d, betreff)
+      await sendSaved(sess.d)
+      if (trelloApi()) {
+        try {
+          await trelloEinsortieren({ vorgang: sess.z || '', email: sess.e, betreff, text: (item?.body || betreff).trim(), dateien: alle || [] })
         } catch (e) {
-          console.error('PDF-Kopie', e.message)
+          console.error('Trello', e.message)
         }
       }
-      const nicht = fehl.length + zuGross.length
-      if (nicht) await setSubject(sess.d, `${sess.b} (${nicht} Datei${nicht > 1 ? 'en' : ''} nicht übertragen – Kunde schickt sie per E-Mail)`)
-      await sendSaved(sess.d)
       if (sess.m === 'selbstauskunft' && sess.z) await offenErledigt(sess.z)
       await kundenBestaetigung({ modus: sess.m, email: sess.e, name: sess.n, anzahl: angekommen, pdf })
       return res.status(200).json({ ok: true, fertig: true })

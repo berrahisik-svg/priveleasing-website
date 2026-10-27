@@ -6,7 +6,8 @@
  * Liegt sie 48 Stunden ohne Eingang, geht einmal eine Erinnerung raus (Kategorie „Erinnerung gesendet“).
  */
 import crypto from 'node:crypto'
-import { ensureFolder, saveMessage, findInFolder, getItem, moveItem, setCategory, sendMail, sendSaved, setSubject } from './ews.js'
+import { ensureFolder, saveMessage, findInFolder, getItem, getAttachment, moveItem, setCategory, sendMail, sendSaved, setSubject } from './ews.js'
+import { trelloApi, trelloEinsortieren } from './trello.js'
 import { mitSignatur } from './signatur.js'
 
 const SITE = process.env.SITE_URL || 'https://www.priveleasing.de'
@@ -187,8 +188,26 @@ export async function erinnerungsLauf({ bis = Date.now() + 25_000, trocken = fal
         continue
       }
       try {
-        await setSubject(it.id, '[Upload unvollständig] ' + it.subject)
+        const betreff = '[Upload unvollständig] ' + it.subject
+        // Mit Trello-API: Inhalt vorher lesen, damit er an die bestehende Karte kommt
+        let item = null
+        const alle = []
+        if (trelloApi()) {
+          item = await getItem(it.id)
+          for (const a of item.attachments) {
+            try {
+              alle.push({ name: a.name, contentType: a.contentType, content: await getAttachment(a.id) })
+            } catch {}
+          }
+        }
+        await setSubject(it.id, betreff)
         await sendSaved(it.id)
+        if (item) {
+          const body = item.body || ''
+          const vorgang = body.match(/persönlicher Link aus der Anfrage ([0-9A-F]{10})/)?.[1] || ''
+          const email = body.match(/^Von: .*<([^>\s]+@[^>\s]+)>/m)?.[1] || ''
+          await trelloEinsortieren({ vorgang, email, betreff, text: body.trim(), dateien: alle }).catch(() => {})
+        }
         protokoll.uploads.push({ betreff: it.subject, gesendet: true })
       } catch (e) {
         protokoll.uploads.push({ betreff: it.subject, fehler: e.message })

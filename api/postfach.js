@@ -118,7 +118,7 @@ async function verarbeiten(kopf, ordner, trocken = false) {
         von: `${mail.fromName} <${from}>`,
         zeit,
         extra:
-          (sa ? 'Persönlicher Selbstauskunft-Link (z. B. per WhatsApp weiterleiten):\n' + sa.link + '\n\n' : '') +
+          (sa ? 'Vorgang ' + sa.id + '\nPersönlicher Selbstauskunft-Link (z. B. per WhatsApp weiterleiten):\n' + sa.link + '\n\n' : '') +
           'Ursprüngliche Mail:\n' + mail.body.slice(0, 2500) + (antwort ? '\n\nAutomatische Antwort:\n' + antwort : '\n\nKeine automatische Antwort – bitte manuell antworten.'),
       }),
       dateien: [...anhaenge, ...(pdfDatei ? [pdfDatei] : [])],
