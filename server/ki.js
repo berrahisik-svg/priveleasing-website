@@ -24,7 +24,7 @@ function json(text) {
 
 export const PRIVE_KONTEXT = `PRIVÉ (priveleasing.de) ist ein Vermittler für Leasing, Finanzierung und Mietkauf ausgewählter Luxusgüter:
 Fahrzeuge (Sport- und Luxuswagen, meist ab 150.000 € netto), Yachten und Boote, Aviation, Luxury Toys (Jetski, Quad u. ä.) und Uhren.
-PRIVÉ ist eine Marke der Lead Lab Consulting FZCO, Dubai. Ansprechpartner: Volkan Ertas (Geschäftsführer). Telefon 089 41616310, info@priveleasing.de.
+PRIVÉ ist eine Marke der Platin RE GmbH, Brauerstraße 12 A, 76135 Karlsruhe. Ansprechpartner: Volkan Ertas (Geschäftsführer). Telefon 089 41616310, info@priveleasing.de.
 Ablauf: Anfrage → Selbstauskunft online ausfüllen und Unterlagen hochladen (persönlicher Link per E-Mail, alternativ PDF „Kundenunterlagen und Selbstauskunft“) → Prüfung über Leasing- und Finanzierungspartner → persönliches Angebot. Rückmeldung innerhalb von 48 Stunden an Werktagen.
 Es gibt keine Standardkonditionen: Laufzeit, Anzahlung, Restwert und Rate werden je Objekt und Bonität individuell strukturiert. Bei schwächerer Bonität ggf. mit Kaution oder höherer Anzahlung.
 WICHTIG: PRIVÉ arbeitet ausschließlich mit Unternehmen, Selbstständigen und Freiberuflern (gewerbliche Kunden). Privatpersonen können nicht bedient werden.

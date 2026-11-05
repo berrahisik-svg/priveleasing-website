@@ -72,7 +72,7 @@ def header(sub):
 
 def footer(page):
     c.setFillColor(SOFT); c.setFont('Mona-Regular', 7.5)
-    c.drawString(M, M - 6 * mm, 'PRIVÉ ist eine Marke der Lead Lab Consulting FZCO, Dubai  ·  info@priveleasing.de  ·  089 41616310  ·  www.priveleasing.de')
+    c.drawString(M, M - 6 * mm, 'PRIVÉ ist eine Marke der Platin RE GmbH  ·  info@priveleasing.de  ·  089 41616310  ·  www.priveleasing.de')
     c.drawRightString(W - M, M - 6 * mm, f'Seite {page} von {PAGES}')
 
 

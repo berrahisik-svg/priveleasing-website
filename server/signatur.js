@@ -18,7 +18,7 @@ export const SIGNATUR_HTML = `
     <a href="${SITE}" style="color:#16181b;text-decoration:none;">www.priveleasing.de</a>
   </td></tr>
   <tr><td style="padding:16px 0 0 0;"><a href="${SITE}" style="text-decoration:none;border:0;"><img src="${SITE}/img/signatur/prive-banner-signatur.png" width="480" height="170" alt="PRIVÉ – Luxury Leasing" style="display:block;border:0;width:480px;height:170px;max-width:100%;"></a></td></tr>
-  <tr><td style="padding:12px 0 0 0;${F}font-size:11px;line-height:16px;color:#9a9ea5;">Leasing, Finanzierung und Beschaffung ausgewählter Luxusgüter.<br>PRIVÉ ist eine Marke der Lead Lab Consulting FZCO, Dubai, Vereinigte Arabische Emirate.</td></tr>
+  <tr><td style="padding:12px 0 0 0;${F}font-size:11px;line-height:16px;color:#9a9ea5;">Leasing, Finanzierung und Beschaffung ausgewählter Luxusgüter.<br>PRIVÉ ist eine Marke der Platin RE GmbH, Karlsruhe.</td></tr>
 </table>`
 
 /** Entfernt eine evtl. von der KI geschriebene Namens-/Firmenzeile nach der Grußformel, damit nichts doppelt steht. */
