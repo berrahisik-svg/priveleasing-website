@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router'
 import { useDict, useHref } from '../lib/i18n'
 import { ease } from '../lib/motion'
 import { useStageReady } from '../lib/stage'
-import { loadPixel, onConsentChange, readConsent, track, writeConsent, type Consent as ConsentValue } from '../lib/pixel'
+import { loadAnalytics, loadPixel, onConsentChange, readConsent, track, writeConsent, type Consent as ConsentValue } from '../lib/pixel'
 import s from './Consent.module.css'
 
 const OPEN = 'prive:consent-open'
@@ -15,7 +15,7 @@ export function openConsent() {
 }
 
 /**
- * Einwilligung für den Meta-Pixel. Erscheint nach dem Intro als schmale Leiste
+ * Einwilligung für Meta-Pixel und Google Analytics. Erscheint nach dem Intro als schmale Leiste
  * unten, in der Form des Bogens. Vorher wird nichts geladen.
  */
 export function Consent() {
@@ -30,7 +30,10 @@ export function Consent() {
   useEffect(() => {
     const v = readConsent()
     setValue(v)
-    if (v === 'ja') loadPixel()
+    if (v === 'ja') {
+      loadPixel()
+      loadAnalytics()
+    }
     if (v === null) setOpen(true)
     const offA = onConsentChange((n) => {
       setValue(n)
